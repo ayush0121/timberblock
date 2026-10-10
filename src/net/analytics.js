@@ -22,3 +22,23 @@ export async function dailyPing() {
     if (status === 200) await store.set(store.KEYS.pinged, today);
   } catch (e) { /* analytics never matters more than the game */ }
 }
+
+/**
+ * One anonymous "someone opened the game" ping per browser per day, sent on
+ * page load before any play. Compared with dailyPing (sent when a game
+ * starts), it shows how many arrivals actually play. Automated browsers that
+ * say so (navigator.webdriver) are not counted.
+ */
+export async function dailyVisit() {
+  if (!available() || navigator.webdriver) return;
+  const today = dateKey();
+  try {
+    if ((await store.get(store.KEYS.visited)) === today) return;
+    const { status } = await call(apiUrl("/api/ping"), {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: await playerId(), kind: "visit" }),
+    });
+    if (status === 200) await store.set(store.KEYS.visited, today);
+  } catch (e) { /* analytics never matters more than the game */ }
+}

@@ -56,7 +56,7 @@ import { getCloud, blankProfile } from "./net/cloud.js";
 import { initAds, mountBanner, adsConfigured } from "./net/ads.js";
 import * as lb from "./net/leaderboard.js";
 import * as leagues from "./net/leagues.js";
-import { dailyPing } from "./net/analytics.js";
+import { dailyPing, dailyVisit } from "./net/analytics.js";
 import * as installer from "./ui/install.js";
 
 const $ = (id) => document.getElementById(id);
@@ -211,7 +211,6 @@ function showHome() {
   renderBoards();
   refreshBoard();
   renderLeague();
-  dailyPing();
   renderInstall();
   show("home");
   if (adsConfigured()) mountBanner($("ad-menu"));
@@ -1309,6 +1308,7 @@ function openRun(resumed) {
   accepting = true;
   hintsLeft = HINTS_PER_GAME;
   if (!resumed) { zenLines = 0; questBump("games"); }
+  dailyPing();   // a player, not just a visitor: counted when a game starts
   undoStack = [];
   powerMode = null;
   $("tray").classList.remove("rotating");
@@ -1746,6 +1746,7 @@ $("back-1").onclick = () => gate("pick");
 
 $("go-guest").onclick = async () => {
   audio.unlock();
+  await store.remove(store.KEYS.signedOut);
   profile = migrate(blankProfile("Guest"));
   profile.guest = true;
   profileId = "local";
@@ -1775,6 +1776,7 @@ $("do-signup").onclick = async () => {
   const err = $("err-signup");
   if ((err.textContent = nameError(name))) return;
   audio.unlock();
+  await store.remove(store.KEYS.signedOut);
   profile = migrate(blankProfile(name));
   profile.skin = theme.id;
   await makeProfile(name);
@@ -1813,6 +1815,7 @@ $("signout").onclick = async () => {
   await persist(true);
   await store.remove(store.KEYS.session);
   await store.remove(store.KEYS.profile);
+  await store.set(store.KEYS.signedOut, true);
   profile = null; profileId = null;
   $("in-name").value = "";
   gate("pick"); show("gate");
@@ -2091,9 +2094,9 @@ soundBtn.onclick = async () => {
   };
 
   gate("pick");
-  show("gate");
   paintSwatches();
   initAds();
+  dailyVisit();
 
   lb.retry().then((view) => {
     if (view && view.date === dateKey()) { lbData = view; lbState = "ok"; renderBoards(); }
@@ -2119,15 +2122,15 @@ soundBtn.onclick = async () => {
     return;
   }
 
-  // A first-time visitor arriving from a challenge link or a daily-puzzle
-  // page should land on the board, not on a sign-up wall. Take them in as a
-  // guest and go straight there.
-  if (incoming || dayLink) {
+  // A first-time visitor lands in the game as a guest, one tap from playing:
+  // no sign-up wall. They can add a name later from the home screen. Only
+  // someone who chose Sign out sees the profile screen.
+  if (incoming || dayLink || !(await store.get(store.KEYS.signedOut))) {
     profile = migrate(blankProfile("Guest"));
     profile.guest = true;
     profileId = "local";
     if (incoming) offerChallenge(incoming);
     await persist(true);
     land();
-  }
+  } else show("gate");   // they signed out: offer the profile choice
 })();

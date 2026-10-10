@@ -64,4 +64,6 @@ export const KEYS = {
   firstDay: "tb.first",        // the date this device first played (analytics)
   pinged: "tb.pinged",         // last day the anonymous analytics ping went out
   install: "tb.install",       // install-prompt bookkeeping: days visited, snooze
+  visited: "tb.visited",       // last day the anonymous visit ping went out
+  signedOut: "tb.signedout",   // the player chose Sign out: show the profile screen, not a new guest
 };

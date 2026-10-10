@@ -195,5 +195,18 @@ await test("names are cleaned", async () => {
   eq(cleanName("x".repeat(40)).length, 18, "capped");
 });
 
+await test("analytics: visits are counted once a day per browser, apart from players", async () => {
+  const { ping, report } = await import("../server/analytics.js");
+  const s = memoryStore();
+  const D0 = Date.UTC(2026, 9, 10, 12);
+  for (const id of ["visitor-a1", "visitor-b2", "visitor-c3"]) await ping(s, { id, kind: "visit" }, D0);
+  await ping(s, { id: "visitor-a1", kind: "visit" }, D0);          // repeat: not counted twice
+  await ping(s, { id: "visitor-a1", first: "2026-10-10" }, D0);    // one of them plays
+  eq((await ping(s, { id: "x", kind: "visit" }, D0)).status, 400, "bad id refused");
+  const day = (await report(s, 1, D0)).body.days[0];
+  eq(day.visitors, 3, "three visitors");
+  eq(day.active, 1, "one player");
+});
+
 console.log(`\n${pass}/${pass + fail} passed`);
 process.exit(fail ? 1 : 0);

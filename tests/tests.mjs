@@ -24,39 +24,33 @@ const track = (p) => allErrors.push(p);
 
 const b = await launch();
 async function page(opts) { const p = await freshPage(b, opts); track(p); return p; }
-async function guest(opts) { const p = await page(opts); await p.click("#go-guest"); await p.waitForTimeout(250); return p; }
+/** A first-time visitor: lands on home as a guest, no sign-up screen. */
+async function guest(opts) { const p = await page(opts); await p.waitForTimeout(150); return p; }
+/** Give the guest a name from the home screen ("Add name"). */
+async function named(p, name) {
+  await p.click("#acct"); await p.fill("#in-name2", name); await p.click("#do-upgrade"); await p.waitForTimeout(250);
+}
 
 /* ── first visit and profiles ──────────────────────────────────────── */
-await test("first visit shows the gate with exactly Create + Guest", async () => {
+await test("first visit lands straight on home as a guest, one tap from playing", async () => {
   const p = await page();
-  eq((await visible(p)).join(), "s-gate", "visible screen");
-  const btns = await p.$$eval("#gate-pick button", (x) => x.filter((b) => b.offsetParent).map((b) => b.textContent.trim()));
-  eq(btns.join("|"), "Create a profile|Play as guest", "gate buttons");
-  eq(await p.locator("text=sign-in code").count(), 0, "sign-in code text anywhere");
-  eq(await p.locator("#go-signup").isDisabled(), false, "create disabled");
+  eq((await visible(p)).join(), "s-home", "no sign-up screen");
+  eq(await txt(p, "#who-name"), "Guest", "guest");
+  eq(await txt(p, "#acct"), "Add name", "can add a name later");
+  await p.click("#m-daily"); await p.waitForTimeout(400);
+  eq((await visible(p)).join(), "s-play", "one tap to the board");
 });
 
-await test("create profile: validates name, creates, survives reload", async () => {
-  const p = await page();
-  await p.click("#go-signup");
-  await p.fill("#in-name", "A");
-  await p.click("#do-signup");
-  ok((await txt(p, "#err-signup")).includes("at least 2"), "short-name error shown");
-  await p.fill("#in-name", "Ayush");
-  await p.click("#do-signup"); await p.waitForTimeout(300);
-  eq((await visible(p)).join(), "s-home", "lands on home");
+await test("add a name: validates, becomes a profile, survives reload", async () => {
+  const p = await guest();
+  await p.click("#acct"); await p.fill("#in-name2", "A"); await p.click("#do-upgrade");
+  ok((await txt(p, "#err-upgrade")).includes("at least 2"), "short-name error shown");
+  await p.fill("#in-name2", "Ayush"); await p.click("#do-upgrade"); await p.waitForTimeout(300);
   eq(await txt(p, "#who-name"), "Ayush", "name shown");
   eq(await txt(p, "#acct"), "Profile", "profile button label");
   await p.reload(); await p.waitForTimeout(500);
   eq((await visible(p)).join(), "s-home", "home after reload");
   eq(await txt(p, "#who-name"), "Ayush", "name after reload");
-});
-
-await test("Back on the create form returns to the choice", async () => {
-  const p = await page();
-  await p.click("#go-signup");
-  await p.click("#back-1");
-  ok(await p.locator("#gate-pick").isVisible(), "choice visible again");
 });
 
 await test("guest: compact 'Add name' turns guest into a profile", async () => {
@@ -72,18 +66,28 @@ await test("guest: compact 'Add name' turns guest into a profile", async () => {
   ok(!(await p.locator("#upgrade").isVisible()), "guest card gone");
 });
 
-await test("profile: rename and sign out", async () => {
-  const p = await page();
-  await p.click("#go-signup"); await p.fill("#in-name", "Old"); await p.click("#do-signup");
-  await p.waitForTimeout(250);
+await test("profile: rename; sign out shows the profile screen and stays signed out", async () => {
+  const p = await guest();
+  await named(p, "Old");
   await p.click("#acct");
   eq(await p.inputValue("#in-rename"), "Old", "rename prefilled");
   await p.fill("#in-rename", "New"); await p.click("#do-rename"); await p.waitForTimeout(200);
   eq(await txt(p, "#who-name"), "New", "renamed");
   await p.click("#acct"); await p.click("#signout"); await p.waitForTimeout(300);
-  eq((await visible(p)).join(), "s-gate", "back at gate");
+  eq((await visible(p)).join(), "s-gate", "profile screen after sign out");
+  const btns = await p.$$eval("#gate-pick button", (x) => x.filter((b) => b.offsetParent).map((b) => b.textContent.trim()));
+  eq(btns.join("|"), "Create a profile|Play as guest", "the two choices");
   await p.reload(); await p.waitForTimeout(400);
   eq((await visible(p)).join(), "s-gate", "stays signed out after reload");
+  // the create form, its Back button, and creating from here
+  await p.click("#go-signup"); await p.click("#back-1");
+  ok(await p.locator("#gate-pick").isVisible(), "Back returns to the choice");
+  await p.click("#go-signup"); await p.fill("#in-name", "A"); await p.click("#do-signup");
+  ok((await txt(p, "#err-signup")).includes("at least 2"), "short-name error shown");
+  await p.fill("#in-name", "Back"); await p.click("#do-signup"); await p.waitForTimeout(300);
+  eq(await txt(p, "#who-name"), "Back", "signed in again");
+  await p.reload(); await p.waitForTimeout(400);
+  eq((await visible(p)).join(), "s-home", "no longer signed out");
 });
 
 /* ── gameplay ──────────────────────────────────────────────────────── */
@@ -190,7 +194,6 @@ const TUT = [[7, 3], [5, 2], [5, 5]];
 
 await test("tutorial: a new player is taught before their first game, then plays it", async () => {
   const p = await page({ tutorial: true });
-  await p.click("#go-guest"); await p.waitForTimeout(250);
   await p.click('.mode[data-mode="classic"]'); await p.waitForTimeout(500);
   ok(await p.locator("#coach").isVisible(), "coach card shown");
   eq(await txt(p, "#coach-step"), "Step 1 of 3", "first step");
@@ -216,7 +219,6 @@ await test("tutorial: a new player is taught before their first game, then plays
 
 await test("tutorial: skip goes straight to the game; replay from home", async () => {
   const p = await page({ tutorial: true });
-  await p.click("#go-guest"); await p.waitForTimeout(250);
   await p.click("#m-daily"); await p.waitForTimeout(500);
   await p.click("#coach-skip"); await p.waitForTimeout(400);
   ok((await txt(p, "#mode-tag")).startsWith("Daily"), "skipped into the daily");
@@ -238,7 +240,7 @@ await test("gentle first games: no giant pieces dealt early; challenge keeps the
 
 await test("challenge link: recipient gets the same board with a target", async () => {
   const p = await page();
-  await p.click("#go-signup"); await p.fill("#in-name", "Sender"); await p.click("#do-signup");
+  await named(p, "Sender");
   await p.waitForTimeout(250);
   await p.click('.mode[data-mode="classic"]'); await p.waitForTimeout(400);
   const firstTray = await p.$$eval("#tray .piece", (x) => x.map((e) => e.children.length + ":" + e.style.gridTemplateColumns).join());
@@ -564,12 +566,10 @@ await test("seasons: hidden out of season; in season, playing earns the skin", a
   ok(!(await p.locator("#m-season").isVisible()) || true, "card visibility depends on today's date");
   const off = await page();
   await off.goto(BASE + "?season=nope"); await off.waitForTimeout(300);
-  await off.click("#go-guest"); await off.waitForTimeout(300);
   eq(await off.locator("#skins .skin", { hasText: "Spooky" }).count(), 0, "unearned seasonal skin hidden out of season");
 
   const on = await page();
   await on.goto(BASE + "?season=halloween2026"); await on.waitForTimeout(300);
-  await on.click("#go-guest"); await on.waitForTimeout(300);
   ok(await on.locator("#m-season").isVisible(), "seasonal card shown");
   eq(await txt(on, "#season-name"), "Halloween Night", "season name");
   ok(await on.locator("#skins .skin.locked", { hasText: "Spooky" }).count() === 1, "skin offered, locked");
@@ -642,7 +642,7 @@ await test("install prompt: offered from the second day, installs, and 'Not now'
 /* ── friends leagues and analytics ─────────────────────────────────── */
 await test("league: one player creates, a friend joins by code, both see the standings", async () => {
   const a = await page();
-  await a.click("#go-signup"); await a.fill("#in-name", "Ana"); await a.click("#do-signup"); await a.waitForTimeout(300);
+  await named(a, "Ana");
   await a.fill("#lg-name", "Office");
   await a.click("#lg-create"); await a.waitForTimeout(500);
   ok(await a.locator("#lg-in").isVisible(), "now in the league");
@@ -651,7 +651,7 @@ await test("league: one player creates, a friend joins by code, both see the sta
   ok(/^[A-Z2-9]{6}$/.test(code), "code shown: " + code);
 
   const b = await page();
-  await b.click("#go-signup"); await b.fill("#in-name", "Ben"); await b.click("#do-signup"); await b.waitForTimeout(300);
+  await named(b, "Ben");
   await b.fill("#lg-join-code", "zzzzzz");
   await b.click("#lg-join"); await b.waitForTimeout(400);
   ok((await txt(b, "#err-lg")).includes("No league"), "bad code explained");
@@ -670,17 +670,19 @@ await test("league: one player creates, a friend joins by code, both see the sta
 await test("league invite link prefills the code", async () => {
   const p = await page();
   await p.goto(BASE + "#lg=ABCDEF"); await p.waitForTimeout(400);
-  await p.click("#go-guest"); await p.waitForTimeout(300);
   eq(await p.inputValue("#lg-join-code"), "ABCDEF", "code prefilled");
 });
 
 await test("analytics: a visit is counted once a day and shows on the stats page", async () => {
   const p = await guest();
   await p.waitForTimeout(400);
+  eq(await p.evaluate(() => localStorage.getItem("tb.pinged")), null, "opening the site is not playing");
+  eq(await p.evaluate(() => localStorage.getItem("tb.visited")), null, "automated browsers are not counted as visitors");
+  await p.click('.mode[data-mode="classic"]'); await p.waitForTimeout(600);
   const pinged = await p.evaluate(() => localStorage.getItem("tb.pinged"));
-  ok(pinged && pinged.includes("20"), "pinged today: " + pinged);
+  ok(pinged && pinged.includes("20"), "counted as a player on starting a game: " + pinged);
   await p.goto(BASE + "stats.html"); await p.waitForTimeout(600);
-  ok((await num(p, "#rows tr:first-child td:nth-child(2)")) >= 1, "players counted today");
+  ok((await num(p, "#rows tr:first-child td:nth-child(3)")) >= 1, "players counted today");
 });
 
 await test("sound toggle flips and persists", async () => {

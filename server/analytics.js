@@ -3,12 +3,16 @@
  * "anonymous id X, first played on date F". Nothing else - no IP logging,
  * no device data, no third party. From that the server counts, per day:
  *
- *   active   distinct players
+ *   visitors distinct browsers that opened the game (kind: "visit", sent on
+ *            page load, before any play) - visitors vs active is the share
+ *            of arrivals who actually start a game
+ *   active   distinct players (sent when a game starts)
  *   new      players whose first day it was
  *   ret1     players back the day after their first day   -> day-1 retention
  *   ret7     players back 7 days after their first day    -> day-7 retention
  *
  *   seen/<date>/<id>   one marker per player per day (dedupes repeat pings)
+ *   vis/<date>/<id>    the same, for visits
  *   st/<date>          the counters
  *
  * Same store contract as leaderboard.js.
@@ -22,7 +26,7 @@ async function bump(store, k, fields) {
   for (let attempt = 0; attempt < 20; attempt++) {
     if (attempt) await new Promise((r) => setTimeout(r, Math.random() * 15 * Math.min(attempt, 6)));
     const got = await store.getJSON(k);
-    const row = got ? got.data : { active: 0, new: 0, ret1: 0, ret7: 0 };
+    const row = got ? got.data : { visitors: 0, active: 0, new: 0, ret1: 0, ret7: 0 };
     for (const f of fields) row[f] = (row[f] || 0) + 1;
     const res = await store.setJSON(k, row, got ? { onlyIfMatch: got.etag } : { onlyIfNew: true });
     if (res.modified) return row;
@@ -30,9 +34,16 @@ async function bump(store, k, fields) {
   throw new Error("busy");
 }
 
-/** POST { id, first } once a day. */
-export async function ping(store, { id, first }, now = Date.now()) {
+/** POST { id, first } once a day; { id, kind: "visit" } once a day per browser. */
+export async function ping(store, { id, first, kind }, now = Date.now()) {
   const today = dateKey(new Date(now));
+  if (kind === "visit") {
+    if (!ID_RE.test(id || "")) return { status: 400, body: { error: "bad" } };
+    const fresh = await store.setJSON(`vis/${today}/${id}`, 1, { onlyIfNew: true });
+    if (!fresh.modified) return { status: 200, body: { counted: false } };
+    await bump(store, `st/${today}`, ["visitors"]);
+    return { status: 200, body: { counted: true } };
+  }
   if (!ID_RE.test(id || "") || !DATE_RE.test(first || "")) return { status: 400, body: { error: "bad" } };
   const age = daysBetween(first, today);
   if (age < 0 || age > 3650) return { status: 400, body: { error: "first" } };
@@ -52,7 +63,7 @@ export async function report(store, days = 30, now = Date.now()) {
   const keys = Array.from({ length: days + 7 }, (_, i) => dateKey(new Date(now - i * 86400000)));
   const rows = await Promise.all(keys.map(async (d) => {
     const got = await store.getJSON(`st/${d}`);
-    return { date: d, ...(got ? got.data : { active: 0, new: 0, ret1: 0, ret7: 0 }) };
+    return { date: d, visitors: 0, ...(got ? got.data : { active: 0, new: 0, ret1: 0, ret7: 0 }) };
   }));
   const at = Object.fromEntries(rows.map((r) => [r.date, r]));
   const out = rows.slice(0, days).map((r) => {
