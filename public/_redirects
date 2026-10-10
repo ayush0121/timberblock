@@ -1,2 +1,6 @@
 # No catch-all: the game lives at / (challenge links use /#c=...), so unknown
 # paths should get public/404.html with a real 404 status, not a soft 200.
+
+# Browsers ask for /favicon.ico by default; serve the real icon instead of a 404
+/favicon.ico  /icons/favicon-32.png  200
+/favicon.png  /icons/favicon-32.png  200
