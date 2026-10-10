@@ -1,0 +1,572 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="theme-color" content="#080614">
+<meta name="description" content="Play Timberblock free: a relaxing 8x8 wood block puzzle in your browser. Clear rows and columns and beat the daily board everyone plays. No download or sign-up.">
+<meta name="keywords" content="block puzzle, wood block puzzle, block puzzle game online, free block puzzle, daily puzzle game, 8x8 puzzle, brain game">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<link rel="canonical" href="https://timberblock.online/">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" href="/icons/favicon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="/icons/icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="mobile-web-app-capable" content="yes">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Timberblock">
+<meta property="og:title" content="Timberblock - the free daily block puzzle">
+<meta property="og:description" content="Everyone in the world plays the same 8x8 board every day. One attempt. Free and offline-capable.">
+<meta property="og:url" content="https://timberblock.online/">
+<meta property="og:image" content="https://timberblock.online/icons/og-card.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Timberblock - the daily 8x8 block puzzle">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Timberblock - the free daily block puzzle">
+<meta name="twitter:description" content="Everyone in the world plays the same 8x8 board every day. One attempt.">
+<meta name="twitter:image" content="https://timberblock.online/icons/og-card.png">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://timberblock.online/#site",
+      "name": "Timberblock",
+      "url": "https://timberblock.online/"
+    },
+    {
+      "@type": ["VideoGame", "WebApplication"],
+      "@id": "https://timberblock.online/#game",
+      "name": "Timberblock",
+      "url": "https://timberblock.online/",
+      "image": "https://timberblock.online/icons/og-card.png",
+      "description": "A free 8x8 block puzzle game you play in the browser. Drag blocks onto the board, clear full rows and columns, and play the shared daily board everyone gets.",
+      "genre": ["Puzzle", "Casual", "Block puzzle"],
+      "gamePlatform": ["Web browser", "Android", "iOS"],
+      "playMode": "SinglePlayer",
+      "applicationCategory": "GameApplication",
+      "operatingSystem": "Any",
+      "isAccessibleForFree": true,
+      "inLanguage": "en",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+    }
+  ]
+}
+</script>
+<title>Timberblock - Free Block Puzzle Game Online | Daily Wood Block Puzzle</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7924324318308807"
+     crossorigin="anonymous"></script>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- ══ GATE ══════════════════════════════════════════════════════ -->
+  <section class="screen" id="s-gate" hidden>
+    <div class="hero">
+      <h1>Timber<span>block</span></h1>
+      <div class="sub">8 × 8 · fit · fill · clear</div>
+      <div class="swatches" id="gate-swatches"></div>
+    </div>
+
+    <div class="card stack" id="gate-pick">
+      <div class="eyebrow">Who's playing?</div>
+      <button class="primary wide" id="go-signup">Create a profile</button>
+      <button class="wide" id="go-guest">Play as guest</button>
+      <div class="aside" id="cloudnote">
+        A <b>profile</b> puts your name on your scores, streaks and share cards.
+        <b>Guest</b> jumps straight in. Either way your progress is saved on this device.
+      </div>
+    </div>
+
+    <div class="card stack" id="gate-signup" hidden>
+      <div class="eyebrow">New profile</div>
+      <input id="in-name" maxlength="18" placeholder="Display name" autocomplete="off" spellcheck="false">
+      <div class="err" id="err-signup"></div>
+      <div class="rowbtns">
+        <button id="back-1">Back</button>
+        <button class="primary" id="do-signup">Create</button>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ══ HOME ══════════════════════════════════════════════════════ -->
+  <section class="screen" id="s-home" hidden>
+    <header class="homehead">
+      <div>
+        <h1>Timber<span>block</span></h1>
+        <div class="sub">8 × 8 · fit · fill · clear</div>
+      </div>
+      <div class="seasondeco" id="season-deco" aria-hidden="true" hidden></div>
+      <div class="logo" id="home-logo" aria-hidden="true"></div>
+    </header>
+
+    <div class="homegrid">
+    <div class="col">
+    <div class="card who">
+      <div>
+        <div class="name" id="who-name">Guest</div>
+        <div class="tag" id="who-tag">this device only</div>
+      </div>
+      <div class="btns"><button class="icon" id="statsbtn" title="Stats &amp; trophies"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4h8v5a4 4 0 0 1-8 0V4zM8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4M12 13v4M8.5 20h7M10 17h4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="sr">Stats</span></button><button id="acct">Profile</button></div>
+    </div>
+
+    <div class="card install" id="install" hidden>
+      <div class="ihead">
+        <span class="iicon" aria-hidden="true">📲</span>
+        <div>
+          <b>Put Timberblock on your home screen</b>
+          <span>One tap to play, works offline, no app store needed.</span>
+        </div>
+      </div>
+      <div class="aside iios" id="install-ios" hidden>
+        In Safari, tap <b>Share</b>
+        <svg viewBox="0 0 24 24" aria-label="the Share icon"><path d="M12 3v12M8 7l4-4 4 4M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        then <b>Add to Home Screen</b>.
+      </div>
+      <div class="rowbtns">
+        <button id="install-later">Not now</button>
+        <button class="primary" id="install-go">Install</button>
+      </div>
+    </div>
+
+    <div class="card stack" id="acctpanel" hidden>
+      <div class="eyebrow">Your profile</div>
+      <input id="in-rename" maxlength="18" placeholder="Display name" autocomplete="off" spellcheck="false">
+      <div class="err" id="err-rename"></div>
+      <div class="rowbtns">
+        <button id="signout">Sign out</button>
+        <button class="primary" id="do-rename">Save name</button>
+      </div>
+    </div>
+
+    <div class="card stack" id="upgrade" hidden>
+      <div class="eyebrow">Playing as guest</div>
+      <div class="aside">Add your name to turn this into a profile. Your scores and streak come with you.</div>
+      <input id="in-name2" maxlength="18" placeholder="Display name" autocomplete="off" spellcheck="false">
+      <div class="err" id="err-upgrade"></div>
+      <button class="primary wide" id="do-upgrade">Create profile</button>
+    </div>
+
+    <div class="card who" id="streakcard" hidden>
+      <div>
+        <div class="name" id="streak-n">0 day streak</div>
+        <div class="tag" id="streak-t">play the daily board to start one</div>
+      </div>
+      <div class="num tnum" id="streak-best" style="font-family:'IBM Plex Mono',monospace;color:var(--accent);font-size:20px">0</div>
+    </div>
+
+    <div class="modes">
+      <button class="mode chal" id="m-chal" hidden>
+        <div>
+          <span class="mh">Challenge <span class="badge alt" id="chal-badge">new</span></span>
+          <p id="chal-sub">A friend sent you a board.</p>
+        </div>
+        <div class="num" id="chal-num">⚔<small>accept</small></div>
+      </button>
+
+      <button class="mode daily" id="m-daily">
+        <div>
+          <span class="mh">Daily Seed <span class="badge" id="daily-badge" hidden>done</span></span>
+          <p id="daily-sub">Everyone in the world plays this board today.</p>
+        </div>
+        <div class="num tnum" id="daily-num">#1<small>today</small></div>
+      </button>
+
+      <button class="mode season" id="m-season" hidden>
+        <div>
+          <span class="mh"><span id="season-name">Seasonal</span> <span class="badge alt" id="season-badge">limited time</span></span>
+          <p id="season-sub">A limited-time board.</p>
+        </div>
+        <div class="num tnum" id="season-num">0<small>best</small></div>
+      </button>
+
+      <button class="mode event" id="m-event">
+        <div>
+          <span class="mh"><span id="event-name">Weekly event</span> <span class="badge alt" id="event-badge">this week</span></span>
+          <p id="event-sub">A twist on the rules, one board for everyone.</p>
+        </div>
+        <div class="num tnum" id="event-num">0<small>best</small></div>
+      </button>
+
+      <button class="mode arch" id="m-archive">
+        <div>
+          <span class="mh">Puzzle archive</span>
+          <p id="arch-sub">Replay any past Daily Seed. Practice, unranked, unlimited tries.</p>
+        </div>
+        <div class="num tnum" id="arch-num">0<small>boards</small></div>
+      </button>
+
+      <button class="mode resume" id="m-resume" hidden>
+        <div>
+          <span class="mh">Resume</span>
+          <p id="resume-sub">Classic</p>
+        </div>
+        <div class="num" id="resume-num">↺<small>saved</small></div>
+      </button>
+
+      <button class="mode adv" id="m-adv">
+        <div>
+          <span class="mh">Adventure</span>
+          <p id="adv-sub">Levels with goals and a move limit. Earn up to three stars.</p>
+        </div>
+        <div class="num tnum" id="adv-num">1<small>level</small></div>
+      </button>
+
+      <button class="mode" data-mode="classic">
+        <div>
+          <span class="mh">Classic</span>
+          <p>No clock, no levels. Place until nothing fits.</p>
+        </div>
+        <div class="num tnum" id="best-classic">0<small>best</small></div>
+      </button>
+
+      <button class="mode" data-mode="pro">
+        <div>
+          <span class="mh">Professional</span>
+          <p>Timed levels. Hit the target before the clock runs out or the run ends.</p>
+        </div>
+        <div class="num tnum" id="best-pro">0<small>best</small></div>
+      </button>
+
+      <button class="mode zen" data-mode="zen">
+        <div>
+          <span class="mh">Zen</span>
+          <p>No clock, no game over. When you're stuck, the board makes room.</p>
+        </div>
+        <div class="num tnum" id="best-zen">0<small>best</small></div>
+      </button>
+    </div>
+
+    <div class="card quests" id="quests">
+      <div class="lbhead">
+        <div class="eyebrow">Today's quests</div>
+        <div class="lbday mono" id="q-reset"></div>
+      </div>
+      <ol class="qlist" id="q-list"></ol>
+      <div class="aside qbonus" id="q-bonus">Finish all three for a bonus: one of every power-up.</div>
+    </div>
+
+    <details class="card stack fold" id="chalcard">
+      <summary class="eyebrow">Got a challenge code?</summary>
+      <div class="aside">
+        Finish any run and you can send the board itself — your friend plays the
+        identical pieces in the identical order. Got one? Paste it here.
+      </div>
+      <input id="in-chal" placeholder="Paste a challenge code or link" autocomplete="off" spellcheck="false">
+      <div class="err" id="err-chal"></div>
+      <button class="wide" id="do-chal">Accept challenge</button>
+    </details>
+
+    <div class="adslot" id="ad-menu" hidden></div>
+    </div>
+
+    <div class="col">
+    <div class="card lb" id="lb-home">
+      <div class="lbhead">
+        <div class="eyebrow" data-lb="title">Today's leaderboard</div>
+        <div class="lbday mono" data-lb="day"></div>
+      </div>
+      <div class="lbtabs" role="tablist" aria-label="Leaderboard">
+        <button role="tab" data-scope="day" aria-selected="true">Today</button>
+        <button role="tab" data-scope="week" aria-selected="false">This week</button>
+        <button role="tab" data-scope="all" aria-selected="false">All-time</button>
+        <button role="tab" data-scope="event" aria-selected="false">Event</button>
+      </div>
+      <div class="lbme" data-lb="me" hidden></div>
+      <ol class="lblist" data-lb="list"></ol>
+      <div class="aside lbnote" data-lb="note">Loading today's board…</div>
+    </div>
+
+    <div class="card stack" id="league">
+      <div class="lbhead">
+        <div class="eyebrow">Friends league</div>
+        <div class="lbday mono" id="lg-code"></div>
+      </div>
+      <div class="stack" id="lg-none">
+        <div class="aside">A private weekly leaderboard for your friends, family or office. Everyone's Daily Seed scores count, Monday to Sunday.</div>
+        <input id="lg-name" maxlength="24" placeholder="League name, e.g. Office" autocomplete="off" spellcheck="false">
+        <button class="primary wide" id="lg-create">Create a league</button>
+        <div class="lgor">or join one</div>
+        <div class="rowbtns lgjoin">
+          <input id="lg-join-code" maxlength="6" placeholder="6-letter code" autocomplete="off" spellcheck="false">
+          <button id="lg-join">Join</button>
+        </div>
+        <div class="err" id="err-lg"></div>
+      </div>
+      <div class="stack" id="lg-in" hidden>
+        <b class="lgtitle" id="lg-title"></b>
+        <ol class="lblist" id="lg-list"></ol>
+        <div class="aside lbnote" id="lg-note"></div>
+        <div class="rowbtns">
+          <button class="primary" id="lg-invite">Invite friends</button>
+          <button id="lg-leave">Leave</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="eyebrow">Look</div>
+      <div class="skins" id="skins"></div>
+    </div>
+
+    <div class="card stack" id="settings">
+      <div class="eyebrow">Settings</div>
+      <label class="toggle"><span>Sound</span><input type="checkbox" id="set-sound"><i></i></label>
+      <label class="toggle"><span>Colorblind symbols on blocks</span><input type="checkbox" id="set-cb"><i></i></label>
+      <label class="toggle"><span>Bigger pieces in the tray</span><input type="checkbox" id="set-big"><i></i></label>
+      <label class="toggle"><span>Vibration</span><input type="checkbox" id="set-haptics"><i></i></label>
+      <label class="toggle" id="row-remind" hidden><span>Daily reminder at 7 pm</span><input type="checkbox" id="set-remind"><i></i></label>
+      <div class="aside kbdhelp">On a keyboard: <b>1 2 3</b> pick a piece, <b>arrows</b> move it, <b>Enter</b> places, <b>H</b> for a hint.</div>
+    </div>
+
+    <div class="card">
+      <div class="eyebrow">Brag about it</div>
+      <div class="share" id="share-home"></div>
+    </div>
+    </div>
+    </div>
+
+    <nav class="aside sitelinks">
+      <button class="linkbtn" id="replay-tut">Tutorial</button> ·
+      <a href="/how-to-play.html">How to play</a> ·
+      <a href="/strategy.html">Tips</a> ·
+      <a href="/daily-puzzle.html">Daily puzzle</a> ·
+      <a href="/daily/">Past puzzles</a> ·
+      <a href="/wood-block-puzzle.html">Wood blocks</a> ·
+      <a href="/about.html">About</a> ·
+      <a href="/contact.html">Contact</a> ·
+      <a href="/privacy.html">Privacy</a>
+    </nav>
+  </section>
+
+  <!-- ══ ADVENTURE MAP ═════════════════════════════════════════════ -->
+  <section class="screen" id="s-map" hidden>
+    <header>
+      <div>
+        <div class="tag mono" id="map-stars">0 ★ earned</div>
+        <h1 style="font-size:26px;margin-top:3px">Adven<span style="display:inline">ture</span></h1>
+      </div>
+      <button id="map-back">Back</button>
+    </header>
+    <button class="primary wide mapplay" id="map-play">Play level 1</button>
+    <div class="map" id="map"></div>
+    <div class="aside maplegend">◆ gems · ▦ stones · ★ score · ≡ lines. Replay any finished level to earn more stars.</div>
+  </section>
+
+  <!-- ══ ARCHIVE ═══════════════════════════════════════════════════ -->
+  <section class="screen" id="s-archive" hidden>
+    <header>
+      <div>
+        <div class="tag mono">Practice · unranked</div>
+        <h1 style="font-size:26px;margin-top:3px">Puzzle <span style="display:inline">archive</span></h1>
+      </div>
+      <button id="arch-back">Back</button>
+    </header>
+    <div class="aside">Every past Daily Seed, exactly as it was dealt. Play them as often as you like: they don't change your streak or the leaderboards.</div>
+    <div class="archlist" id="arch-list"></div>
+    <button class="wide" id="arch-more">Show older boards</button>
+  </section>
+
+  <!-- ══ STATS ═════════════════════════════════════════════════════ -->
+  <section class="screen" id="s-stats" hidden>
+    <header>
+      <div>
+        <div class="tag mono">Your record</div>
+        <h1 style="font-size:26px;margin-top:3px">Stats <span style="display:inline">&amp; trophies</span></h1>
+      </div>
+      <button id="stats-back">Back</button>
+    </header>
+    <div id="stats-body" class="stack" style="gap:14px"></div>
+  </section>
+
+  <!-- ══ PLAY ══════════════════════════════════════════════════════ -->
+  <section class="screen" id="s-play" hidden>
+    <header>
+      <div>
+        <div class="tag mono" id="mode-tag">Classic</div>
+        <h1 style="font-size:22px;margin-top:3px">Timber<span style="display:inline">block</span></h1>
+      </div>
+      <div class="plate">
+        <div class="k">Score</div>
+        <div class="v tnum" id="score">0</div>
+        <div class="best">Best <span class="tnum" id="best">0</span></div>
+        <div class="combo mono" id="combo" hidden>×2 combo</div>
+      </div>
+    </header>
+
+    <div class="pro card" id="prohud" hidden>
+      <div class="gauge">
+        <div class="lbl" id="lvl-lbl">Lv 1</div>
+        <div class="meter"><i id="tgtfill"></i></div>
+        <div class="val tnum" id="tgtval">0 / 220</div>
+      </div>
+      <div class="gauge" id="timegauge">
+        <div class="lbl">Time</div>
+        <div class="meter"><i id="timefill"></i></div>
+        <div class="val tnum" id="timeval">1:30</div>
+      </div>
+    </div>
+
+    <div class="pro card" id="chalhud" hidden>
+      <div class="gauge">
+        <div class="lbl" id="chal-lbl">Beat</div>
+        <div class="meter"><i id="chalfill"></i></div>
+        <div class="val tnum" id="chalval">0 / 0</div>
+      </div>
+    </div>
+
+    <div class="pro card" id="advhud" hidden>
+      <div class="gauge">
+        <div class="lbl" id="adv-lbl">Lv 1</div>
+        <div class="meter"><i id="advfill"></i></div>
+        <div class="val tnum" id="advval">0 / 5</div>
+      </div>
+      <div class="advgoal"><span id="adv-goal">Clear 5 lines</span><span class="mono tnum" id="adv-moves">19 moves</span></div>
+    </div>
+
+    <div class="card stats" id="playstats">
+      <div class="eyebrow">Your record</div>
+      <dl class="statgrid">
+        <div><dt>Classic</dt><dd class="tnum" id="st-classic">0</dd></div>
+        <div><dt>Professional</dt><dd class="tnum" id="st-pro">0</dd></div>
+        <div><dt>Streak</dt><dd class="tnum" id="st-streak">0</dd></div>
+        <div><dt>Games</dt><dd class="tnum" id="st-games">0</dd></div>
+      </dl>
+      <div class="aside tips" id="st-tip"></div>
+    </div>
+
+    <div class="card lb" id="lb-play">
+      <div class="lbhead">
+        <div class="eyebrow">Today's leaderboard</div>
+        <div class="lbday mono" data-lb="day"></div>
+      </div>
+      <div class="lbme" data-lb="me" hidden></div>
+      <ol class="lblist" data-lb="list"></ol>
+      <div class="aside lbnote" data-lb="note">Loading today's board…</div>
+    </div>
+
+    <div class="boardwrap">
+      <div class="board" id="board"></div>
+      <canvas id="chips"></canvas>
+
+      <div class="coachcard" id="coach" hidden>
+        <div class="coachtop">
+          <span class="mono" id="coach-step">Step 1 of 3</span>
+          <button class="linkbtn" id="coach-skip">Skip</button>
+        </div>
+        <b id="coach-title">Fill a row</b>
+        <p id="coach-text">Drag the piece into the gap.</p>
+      </div>
+
+      <div class="over" id="over" hidden>
+        <h2 id="over-title">Out of room</h2>
+        <div class="fin tnum" id="fin">0</div>
+        <div class="note" id="fnote">no piece fits the board</div>
+        <div class="rankline" id="rankline" hidden></div>
+        <div class="acts">
+          <button class="primary" id="again">Play again</button>
+          <button id="sharecard">Image</button>
+          <button id="sharevid" hidden>Video</button>
+          <button id="sendchal">Challenge</button>
+          <button class="icon" id="tohome" title="Menu">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+            <span class="sr">Menu</span>
+          </button>
+        </div>
+        <div class="sharehead">Share your score</div>
+        <div class="share" id="share-over"></div>
+      </div>
+
+      <div class="over" id="rescue" hidden>
+        <h2>Stuck!</h2>
+        <div class="note">No piece fits. Use a power-up to keep going?</div>
+        <div class="acts rescue">
+          <button class="primary" id="rs-swap">Swap pieces <b id="rs-swap-n"></b></button>
+          <button id="rs-undo">Undo last move <b id="rs-undo-n"></b></button>
+          <button id="rs-rotate">Rotate a piece <b id="rs-rotate-n"></b></button>
+          <button id="rs-giveup">End the game</button>
+        </div>
+      </div>
+
+      <div class="over" id="advover" hidden>
+        <h2 id="adv-title">Level 1 complete</h2>
+        <div class="stars" id="adv-stars" aria-label="stars"></div>
+        <div class="note" id="adv-note"></div>
+        <div class="acts">
+          <button class="primary" id="adv-next">Next level →</button>
+          <button id="adv-retry">Retry</button>
+          <button id="adv-menu">Menu</button>
+        </div>
+      </div>
+
+      <div class="over" id="levelup" hidden>
+        <h2>Level cleared</h2>
+        <div class="fin tnum" id="lvbonus">+0</div>
+        <div class="note" id="lvnote">time bonus</div>
+        <button class="primary" id="nextlvl">Next level →</button>
+      </div>
+    </div>
+
+    <div class="tray" id="tray"></div>
+
+    <div class="bar-row">
+      <div class="hint">Drag a piece onto the board.</div>
+      <div class="btns">
+        <button class="icon hintbtn pw" id="pw-rotate" title="Rotate a piece (R)" hidden>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.4-5.7M20 4v5h-5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span class="hintn" id="pw-rotate-n">3</span>
+          <span class="sr">Rotate</span>
+        </button>
+        <button class="icon hintbtn pw" id="pw-swap" title="Swap the pieces (S)" hidden>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h13l-3-3M20 16H7l3 3" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span class="hintn" id="pw-swap-n">3</span>
+          <span class="sr">Swap</span>
+        </button>
+        <button class="icon hintbtn pw" id="pw-undo" title="Undo (U)" hidden>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 14L4 9l5-5M4 9h10a6 6 0 0 1 0 12h-3" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span class="hintn" id="pw-undo-n">3</span>
+          <span class="sr">Undo</span>
+        </button>
+        <button class="icon hintbtn" id="hint" title="Hint (H)">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.6 10.8c.6.5 1 1.2 1 2V16h5.2v-.2c0-.8.4-1.5 1-2A6 6 0 0 0 12 3z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span class="hintn" id="hint-n">3</span>
+          <span class="sr">Hint</span>
+        </button>
+        <button class="icon" id="sound" aria-pressed="true" title="Sound">
+          <svg class="on" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          <svg class="mute" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16.5 9.5l5 5m0-5l-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          <span class="sr">Sound on</span>
+        </button>
+        <button class="icon" id="quit" title="Menu">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+          <span class="sr">Menu</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<script type="module" src="/src/main.js"></script>
+<script>
+  // Offline + installable. Registered only on a real https origin, so it
+  // never interferes with `vite dev` or a file:// preview.
+  if ("serviceWorker" in navigator && location.protocol === "https:") {
+    addEventListener("load", () => {
+      navigator.serviceWorker.register("/sw.js").catch(() => {});
+    });
+  }
+</script>
+</body>
+</html>

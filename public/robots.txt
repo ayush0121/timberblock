@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://timberblock.online/sitemap.xml
+Sitemap: https://timberblock.online/sitemap-daily.xml

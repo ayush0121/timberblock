@@ -1,0 +1,2 @@
+# No catch-all: the game lives at / (challenge links use /#c=...), so unknown
+# paths should get public/404.html with a real 404 status, not a soft 200.

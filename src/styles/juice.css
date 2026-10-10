@@ -1,0 +1,184 @@
+/* Game feel: line sweeps, shake, praise callouts, combo chip, celebrations,
+   icon buttons, and the home-screen entrance. Shared by every skin - it only
+   reads the skin tokens. */
+
+/* ── line sweep ───────────────────────────────────────────────────── */
+.sweep{
+  position:absolute; z-index:15; pointer-events:none; border-radius:var(--cell-radius);
+  background:linear-gradient(90deg, transparent, color-mix(in srgb,var(--accent) 70%,#fff) 50%, transparent);
+  background-size:200% 100%; mix-blend-mode:screen;
+  box-shadow:0 0 18px 2px color-mix(in srgb,var(--accent) 55%,transparent);
+  opacity:0; animation:sweep .5s ease-out forwards;
+}
+.sweep.v{
+  background:linear-gradient(180deg, transparent, color-mix(in srgb,var(--accent) 70%,#fff) 50%, transparent);
+  background-size:100% 200%; animation-name:sweepv;
+}
+@keyframes sweep{0%{opacity:0; background-position:100% 0} 25%{opacity:1} 100%{opacity:0; background-position:-100% 0}}
+@keyframes sweepv{0%{opacity:0; background-position:0 100%} 25%{opacity:1} 100%{opacity:0; background-position:0 -100%}}
+
+/* ── shake ────────────────────────────────────────────────────────── */
+.boardwrap.shake{animation:shake .38s cubic-bezier(.36,.07,.19,.97)}
+@keyframes shake{
+  15%{transform:translate(calc(var(--shake) * -1), calc(var(--shake) * .5))}
+  30%{transform:translate(var(--shake), calc(var(--shake) * -.5))}
+  45%{transform:translate(calc(var(--shake) * -.7), 0)}
+  60%{transform:translate(calc(var(--shake) * .5), calc(var(--shake) * .3))}
+  80%{transform:translate(calc(var(--shake) * -.2), 0)}
+}
+
+/* ── praise callout ───────────────────────────────────────────────── */
+.callout{
+  position:absolute; z-index:25; left:50%; top:42%; pointer-events:none;
+  display:flex; flex-direction:column; align-items:center; gap:4px;
+  transform:translate(-50%,-50%); animation:callout 1.25s cubic-bezier(.2,1.4,.4,1) forwards;
+}
+.callout b{
+  font-family:"Alfa Slab One",Georgia,serif; font-weight:400; white-space:nowrap;
+  font-size:clamp(30px,10vw,46px); line-height:1.05; letter-spacing:.01em;
+  background:linear-gradient(180deg,#fff 0%,var(--accent) 60%,color-mix(in srgb,var(--accent) 65%,#000));
+  -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 3px 0 rgba(0,0,0,.55)) drop-shadow(0 0 16px color-mix(in srgb,var(--accent) 50%,transparent));
+}
+.callout.t1 b{font-size:clamp(24px,8vw,34px)}
+.callout.t3 b{
+  background:linear-gradient(180deg,#fff 0%,var(--accent-2) 50%,var(--accent) 100%);
+  -webkit-background-clip:text; background-clip:text;
+}
+.callout small{
+  font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:11px; letter-spacing:.2em;
+  text-transform:uppercase; color:var(--ink); padding:4px 10px; border-radius:20px;
+  background:color-mix(in srgb,var(--bg) 75%,transparent); border:1px solid var(--rule);
+}
+@keyframes callout{
+  0%{opacity:0; transform:translate(-50%,-50%) scale(.4) rotate(-6deg)}
+  18%{opacity:1; transform:translate(-50%,-50%) scale(1.12) rotate(2deg)}
+  30%{transform:translate(-50%,-50%) scale(1) rotate(0)}
+  75%{opacity:1; transform:translate(-50%,-56%) scale(1)}
+  100%{opacity:0; transform:translate(-50%,-75%) scale(.92)}
+}
+
+/* ── score plate ──────────────────────────────────────────────────── */
+.plate .v{display:inline-block; transform-origin:100% 60%}
+#score.bump{animation:bump .3s cubic-bezier(.2,1.8,.5,1)}
+@keyframes bump{40%{transform:scale(1.14); color:var(--accent)}}
+.plate{position:relative}
+.plate .combo{
+  position:absolute; right:10px; bottom:-10px; white-space:nowrap; font-size:10px; letter-spacing:.14em; text-transform:uppercase;
+  color:#fff; background:var(--accent-2); border-radius:20px;
+  padding:2px 8px; display:inline-block; animation:pop-in .25s cubic-bezier(.2,1.8,.5,1);
+  box-shadow:0 0 12px -2px var(--accent-2);
+}
+@keyframes pop-in{from{transform:scale(.4); opacity:0}}
+
+/* ── end of run ───────────────────────────────────────────────────── */
+.over.best .note{
+  color:var(--accent-ink); font-weight:500;
+  background:linear-gradient(90deg,var(--accent),var(--accent-2));
+  padding:3px 12px; border-radius:20px; margin-bottom:9px;
+  box-shadow:0 0 22px -4px var(--accent);
+  animation:pop-in .4s .9s cubic-bezier(.2,1.8,.5,1) both;
+}
+.over.best .fin{text-shadow:0 0 24px color-mix(in srgb,var(--accent) 60%,transparent)}
+.over h2{animation:drop .45s cubic-bezier(.2,1.5,.5,1)}
+@keyframes drop{from{transform:translateY(-14px); opacity:0}}
+
+/* ── tray: pieces deal in, and lift when you reach for them ───────── */
+.piece{transition:transform .14s ease}
+.slot:not(.dead) .piece:hover{transform:translateY(-3px) scale(1.04)}
+.tray .slot:not(.taken){animation:deal .32s cubic-bezier(.2,1.5,.5,1) both}
+.tray .slot:nth-child(2){animation-delay:.05s}
+.tray .slot:nth-child(3){animation-delay:.1s}
+@keyframes deal{from{transform:translateY(16px) scale(.8); opacity:0}}
+
+/* ── icon buttons ─────────────────────────────────────────────────── */
+.sr{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap}
+button.icon{position:relative; width:44px; min-height:44px; padding:0; display:inline-grid; place-items:center}
+button.icon svg{width:20px; height:20px; fill:currentColor}
+button.icon .mute{display:none}
+button.icon.off .on{display:none}
+button.icon.off .mute{display:block}
+button.icon.off{color:var(--ink-2)}
+
+/* ── home header mark ─────────────────────────────────────────────── */
+.homehead{align-items:center}
+.logo{display:grid; grid-template-columns:repeat(3,1fr); gap:3px; width:58px; height:58px; flex-shrink:0}
+.logo i{
+  position:relative; border-radius:var(--cell-radius);
+  background:linear-gradient(180deg,var(--socket-in),var(--socket));
+  box-shadow:inset 0 1px 3px rgba(0,0,0,.4);
+}
+.logo .blk{display:block; animation:logo-in .5s cubic-bezier(.2,1.6,.5,1) both}
+@keyframes logo-in{from{transform:translateY(-30px) scale(.6); opacity:0}}
+
+/* ── home: cards lift, the daily card breathes, screens rise in ───── */
+.mode{transition:transform .15s ease, border-color .15s ease, box-shadow .15s ease}
+.mode:hover:not(:disabled){transform:translateY(-2px); box-shadow:0 5px 0 var(--shadow), 0 12px 26px -12px var(--accent)}
+.mode.daily:not(.done){animation:breathe 2.8s ease-in-out infinite}
+@keyframes breathe{50%{box-shadow:0 3px 0 var(--shadow), 0 0 26px -6px var(--accent)}}
+@keyframes rise-in{from{transform:translateY(10px); opacity:0}}
+
+/* ── collapsible challenge-code card ──────────────────────────────── */
+.fold summary{cursor:pointer; list-style:none; display:flex; justify-content:space-between; align-items:center}
+.fold summary::-webkit-details-marker{display:none}
+.fold summary::after{content:"+"; font-size:18px; line-height:1; color:var(--accent); transition:transform .2s ease}
+.fold[open] summary::after{transform:rotate(45deg)}
+.fold[open] summary{margin-bottom:4px}
+.fold:not([open]){gap:0}
+
+/* the light wood skin needs a dark outline for the callout to read */
+:root[data-skin="timber"] .callout b{
+  background:linear-gradient(180deg,#FFF3D6 0%,#F2C76A 50%,#C98A1E 100%);
+  -webkit-background-clip:text; background-clip:text;
+  filter:drop-shadow(1.5px 0 0 #3B2412) drop-shadow(-1.5px 0 0 #3B2412)
+         drop-shadow(0 1.5px 0 #3B2412) drop-shadow(0 -1.5px 0 #3B2412)
+         drop-shadow(0 4px 0 rgba(59,36,18,.6));
+}
+:root[data-skin="timber"] .callout small{background:rgba(255,246,226,.9)}
+
+/* ── tutorial ─────────────────────────────────────────────────────── */
+.coachcard{
+  position:absolute; z-index:30; left:50%; top:10px; transform:translateX(-50%);
+  width:min(92%,380px); padding:12px 14px; border-radius:12px; text-align:left;
+  background:color-mix(in srgb,var(--panel) 94%,transparent);
+  border:1px solid var(--accent); box-shadow:0 10px 28px rgba(0,0,0,.45), 0 0 24px -8px var(--accent);
+  animation:pop-in .3s cubic-bezier(.2,1.6,.5,1);
+}
+.coachtop{display:flex; justify-content:space-between; align-items:center; margin-bottom:4px}
+.coachtop .mono{font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:var(--accent)}
+.coachcard b{display:block; font-family:"Alfa Slab One",Georgia,serif; font-weight:400; font-size:19px; color:var(--ink)}
+.coachcard p{margin:3px 0 0; font-size:13px; line-height:1.45; color:var(--ink-2)}
+.linkbtn{
+  background:none; border:0; box-shadow:none; min-height:0; padding:4px 2px; cursor:pointer;
+  font-family:inherit; font-size:inherit; letter-spacing:inherit; text-transform:none;
+  color:var(--ink-2); text-decoration:underline; text-underline-offset:2px;
+}
+.linkbtn:hover{color:var(--accent); border:0}
+.coachtop .linkbtn{font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:11px; letter-spacing:.12em; text-transform:uppercase}
+
+.cell.tut-goal::after{
+  content:''; position:absolute; inset:-1px; border-radius:calc(var(--cell-radius) + 1px); pointer-events:none;
+  box-shadow:0 0 0 2px var(--accent), 0 0 16px 3px color-mix(in srgb,var(--accent) 60%,transparent);
+  background:color-mix(in srgb,var(--accent) 18%,transparent);
+  animation:pulse .8s ease-in-out infinite alternate;
+}
+
+.tut-hand{
+  position:fixed; left:0; top:0; z-index:70; pointer-events:none;
+  width:46px; height:46px; margin:-6px 0 0 -16px;
+  background:no-repeat center/contain url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cpath d='M19 6a4 4 0 0 1 4 4v13l1.5-.4a4 4 0 0 1 4.6 2l.2.4 1.6-.4a4 4 0 0 1 4.6 2.6l1.8-.3a4 4 0 0 1 4.5 3.6l.1 1.2c.4 5.3-1.1 9.2-3.9 11.8A10 10 0 0 1 31 46h-6.2a10 10 0 0 1-8.3-4.4L9.7 31.7a3.7 3.7 0 0 1 5.5-4.9L15 27V10a4 4 0 0 1 4-4z' fill='%23fff' stroke='%23111' stroke-width='2.2' stroke-linejoin='round'/%3E%3C/svg%3E");
+  filter:drop-shadow(0 4px 6px rgba(0,0,0,.5));
+  opacity:0;
+}
+.tut-hand.go{animation:tut-drag 2.2s ease-in-out .4s infinite}
+@keyframes tut-drag{
+  0%{opacity:0; transform:translate(var(--x0),var(--y0)) scale(1)}
+  12%{opacity:1; transform:translate(var(--x0),var(--y0)) scale(.86)}
+  62%{opacity:1; transform:translate(var(--x1),var(--y1)) scale(.86)}
+  74%{opacity:1; transform:translate(var(--x1),var(--y1)) scale(1)}
+  90%,100%{opacity:0; transform:translate(var(--x1),var(--y1)) scale(1)}
+}
+@media (prefers-reduced-motion:reduce){
+  .tut-hand.go{animation:none; opacity:1; transform:translate(var(--x1),var(--y1))}
+}
+.sitelinks .linkbtn{font-size:12.5px; color:var(--ink-2)}

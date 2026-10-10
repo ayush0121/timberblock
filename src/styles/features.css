@@ -1,0 +1,295 @@
+/* Toasts, the Stats & trophies screen, settings toggles, leaderboard tabs,
+   hints, keyboard selection, locked skins, colorblind symbols, Zen. */
+
+/* ── toasts ───────────────────────────────────────────────────────── */
+.toasts{
+  position:fixed; z-index:90; left:50%; top:calc(10px + env(safe-area-inset-top));
+  transform:translateX(-50%); width:min(92vw,380px);
+  display:flex; flex-direction:column; gap:8px; pointer-events:none;
+}
+.toast{
+  display:flex; align-items:center; gap:12px; padding:10px 14px; border-radius:12px;
+  background:color-mix(in srgb,var(--panel) 96%,transparent);
+  border:1px solid var(--accent);
+  box-shadow:0 12px 30px rgba(0,0,0,.45), 0 0 24px -8px var(--accent);
+  animation:toast-in .4s cubic-bezier(.2,1.5,.5,1);
+  transition:opacity .4s ease, transform .4s ease;
+}
+.toast.out{opacity:0; transform:translateY(-12px)}
+@keyframes toast-in{from{opacity:0; transform:translateY(-18px) scale(.95)}}
+.toast .ti{font-size:24px; line-height:1}
+.toast .tb{display:flex; flex-direction:column; gap:1px; min-width:0}
+.toast .tk{font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:9.5px; letter-spacing:.18em; text-transform:uppercase; color:var(--accent)}
+.toast b{font-size:15px; color:var(--ink)}
+.toast .tt{font-size:12px; color:var(--ink-2)}
+
+/* ── stats screen ─────────────────────────────────────────────────── */
+#s-stats > header{align-items:center}
+.stiles{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px}
+.stile{
+  display:flex; flex-direction:column; gap:2px; padding:12px; border-radius:10px;
+  background:linear-gradient(180deg,var(--panel),var(--panel-2)); border:1px solid var(--rule);
+}
+.stile .sk{font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:9.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--ink-2)}
+.stile .sv{font-family:"IBM Plex Mono",ui-monospace,monospace; font-weight:500; font-size:24px; color:var(--ink)}
+.stile .ss{font-size:11.5px; color:var(--ink-2)}
+
+/* the daily-history bars: one series, the skin's accent, rounded data-ends */
+.hchart{margin-top:12px}
+.hbars{display:flex; align-items:stretch; gap:2px; height:120px; border-bottom:1px solid var(--rule)}
+.hcol{flex:1; display:flex; flex-direction:column; justify-content:flex-end; align-items:center; position:relative; outline:none}
+.hbar{display:block; width:min(70%,22px); border-radius:4px 4px 0 0; background:var(--accent); opacity:.85; transition:opacity .15s}
+.hcol:hover .hbar, .hcol:focus-visible .hbar{opacity:1}
+.hday{position:absolute; bottom:-18px; font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:9px; color:var(--ink-3)}
+.hchart{padding-bottom:18px}
+.hcol:hover::after, .hcol:focus-visible::after{
+  content:attr(data-tip); position:absolute; bottom:calc(100% + 4px); white-space:nowrap; z-index:2;
+  font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:10.5px; color:var(--ink);
+  background:var(--panel); border:1px solid var(--rule); border-radius:6px; padding:4px 7px;
+  box-shadow:0 4px 12px rgba(0,0,0,.35);
+}
+.hcol:first-child:hover::after{left:0} .hcol:last-child:hover::after{right:0}
+
+.trophies{display:grid; grid-template-columns:1fr; gap:6px; margin-top:10px}
+.trophy{display:flex; gap:10px; align-items:flex-start; padding:9px 10px; border-radius:8px; background:color-mix(in srgb,var(--bg) 40%,transparent); opacity:.6}
+.trophy.got{opacity:1; box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--accent) 45%,transparent)}
+.trophy .tic{font-size:18px; line-height:1.2; filter:grayscale(1)}
+.trophy.got .tic{filter:none}
+.trophy b{display:block; font-size:13.5px; color:var(--ink)}
+.trophy span{display:block; font-size:12px; color:var(--ink-2)}
+.trophy .tskin{color:var(--accent); font-size:11px; margin-top:2px}
+@media (min-width:640px){ .stiles{grid-template-columns:repeat(5,minmax(0,1fr))} .trophies{grid-template-columns:1fr 1fr} }
+@media (min-width:1000px){ #s-stats{width:min(1040px,100%); margin:0 auto} .trophies{grid-template-columns:1fr 1fr 1fr} }
+
+/* ── settings toggles ─────────────────────────────────────────────── */
+.toggle{display:flex; align-items:center; justify-content:space-between; gap:12px; cursor:pointer; font-size:14px; min-height:36px}
+.toggle input{position:absolute; opacity:0; width:1px; height:1px}
+.toggle i{
+  position:relative; flex-shrink:0; width:42px; height:24px; border-radius:20px;
+  background:color-mix(in srgb,var(--bg) 60%,#000 20%); border:1px solid var(--rule);
+  transition:background .2s ease;
+}
+.toggle i::after{
+  content:""; position:absolute; top:2px; left:2px; width:18px; height:18px; border-radius:50%;
+  background:var(--ink-2); transition:transform .2s cubic-bezier(.2,1.5,.5,1), background .2s;
+}
+.toggle input:checked + i{background:var(--accent)}
+.toggle input:checked + i::after{transform:translateX(18px); background:#fff}
+.toggle input:focus-visible + i{outline:2px solid var(--accent); outline-offset:2px}
+.kbdhelp{font-size:12px; margin-top:4px}
+@media (hover:none){ .kbdhelp{display:none} }
+
+/* ── leaderboard tabs ─────────────────────────────────────────────── */
+.lbtabs{display:grid; grid-template-columns:repeat(3,1fr); gap:4px; padding:3px; border-radius:9px; background:color-mix(in srgb,var(--bg) 50%,transparent)}
+.lbtabs button{min-height:32px; padding:6px 4px; font-size:10px; letter-spacing:.1em; box-shadow:none; border-color:transparent; background:none; color:var(--ink-2)}
+.lbtabs button[aria-selected="true"]{background:var(--panel); color:var(--ink); border-color:var(--rule); box-shadow:0 1px 0 var(--shadow)}
+
+/* ── hints ────────────────────────────────────────────────────────── */
+.hintbtn .hintn{
+  position:absolute; top:3px; right:3px; min-width:15px; height:15px; border-radius:8px; padding:0 3px;
+  font-size:9.5px; line-height:15px; letter-spacing:0; color:var(--accent-ink); background:var(--accent);
+}
+.hintbtn.off{color:var(--ink-3)}
+.hintbtn.off .hintn{background:var(--ink-3)}
+.cell.hint-goal::after{
+  content:''; position:absolute; inset:-1px; border-radius:calc(var(--cell-radius) + 1px); pointer-events:none;
+  box-shadow:0 0 0 2px var(--accent-2), 0 0 14px 2px color-mix(in srgb,var(--accent-2) 60%,transparent);
+  background:color-mix(in srgb,var(--accent-2) 20%,transparent);
+  animation:pulse .7s ease-in-out infinite alternate;
+}
+.slot.hinted{box-shadow:inset 0 0 0 2px var(--accent-2); border-radius:8px; animation:pulse .7s ease-in-out infinite alternate}
+
+/* keyboard: the picked piece */
+.slot.kbd{box-shadow:inset 0 0 0 2px var(--accent); border-radius:8px}
+
+/* ── locked skins ─────────────────────────────────────────────────── */
+.skin.locked{opacity:.62}
+.skin.locked .sw{filter:grayscale(.85)}
+.skins{grid-template-columns:repeat(3,minmax(0,1fr))}
+.skin .sn{white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+
+/* ── streak at risk ───────────────────────────────────────────────── */
+#streakcard.warn{border-color:var(--accent-2); box-shadow:0 3px 0 var(--shadow), 0 0 0 1px var(--accent-2)}
+
+/* ── Zen card ─────────────────────────────────────────────────────── */
+.mode.zen{
+  background:
+    radial-gradient(120% 140% at 100% 100%, color-mix(in srgb,var(--good) 14%,transparent) 0%, transparent 60%),
+    linear-gradient(180deg,var(--panel),var(--panel-2));
+}
+.mode.zen .num{color:var(--good)}
+
+/* ── colorblind symbols: a shape per tone, on top of the colour ──── */
+.cb .blk{container-type:size}
+.cb .blk[data-t]::before{
+  position:absolute; inset:0; display:grid; place-items:center; z-index:1; pointer-events:none;
+  font-family:system-ui,sans-serif; font-weight:700; font-size:52cqmin; line-height:1;
+  color:rgba(255,255,255,.92); text-shadow:0 1px 2px rgba(0,0,0,.6);
+}
+.cb .blk[data-t="0"]::before{content:"●"}
+.cb .blk[data-t="1"]::before{content:"▲"}
+.cb .blk[data-t="2"]::before{content:"■"}
+.cb .blk[data-t="3"]::before{content:"◆"}
+.cb .blk[data-t="4"]::before{content:"★"}
+.cb .blk[data-t="5"]::before{content:"✚"}
+.cb .blk[data-t="6"]::before{content:"♥"}
+
+/* ── Adventure and the weekly event ───────────────────────────────── */
+.mode.adv{
+  background:
+    radial-gradient(120% 140% at 0% 100%, color-mix(in srgb,var(--accent) 14%,transparent) 0%, transparent 60%),
+    linear-gradient(180deg,var(--panel),var(--panel-2));
+}
+.mode.event{
+  border-color:var(--accent-2);
+  background:
+    repeating-linear-gradient(135deg, color-mix(in srgb,var(--accent-2) 7%,transparent) 0 10px, transparent 10px 20px),
+    linear-gradient(180deg,var(--panel),var(--panel-2));
+}
+.mode.event .num{color:var(--accent-2)}
+
+#s-play > #advhud{grid-area:hud}
+#advfill{background:linear-gradient(90deg, color-mix(in srgb,var(--good) 70%,var(--accent)), var(--good))}
+.advgoal{display:flex; justify-content:space-between; gap:10px; font-size:12.5px; color:var(--ink-2)}
+.advgoal .mono{font-size:11.5px; color:var(--ink)}
+#advhud.low .advgoal .mono{color:var(--danger)}
+
+/* gems sit on blocks; clear their row or column to collect them */
+.cell.gem .blk::before{
+  content:""; position:absolute; inset:22%; z-index:2; pointer-events:none;
+  background:linear-gradient(135deg,#fff 0%,#bdf6ff 30%,#38c6ff 60%,#1a5bd6 100%);
+  clip-path:polygon(50% 0,100% 38%,80% 100%,20% 100%,0 38%);
+  filter:drop-shadow(0 0 4px rgba(120,220,255,.9));
+  animation:gem 1.6s ease-in-out infinite alternate;
+}
+@keyframes gem{to{filter:drop-shadow(0 0 9px rgba(160,235,255,1))}}
+/* stones: a grey block, whatever the skin */
+.cell.stone .blk{
+  --base:#7d7f86 !important; --hi:#b3b5bb !important; --lo:#4d4f55 !important;
+  background:
+    radial-gradient(circle at 30% 30%, rgba(255,255,255,.18) 0 18%, transparent 19%),
+    radial-gradient(circle at 70% 65%, rgba(0,0,0,.18) 0 14%, transparent 15%),
+    linear-gradient(160deg,#a3a5ab,#74767d 55%,#55575d) !important;
+  box-shadow:inset 0 0 0 1px rgba(0,0,0,.45), inset 0 2px 0 rgba(255,255,255,.25) !important;
+}
+.cell.stone .blk::after{display:none}
+
+.stars{display:flex; gap:6px; justify-content:center; margin:4px 0 2px}
+.stars span{font-size:38px; line-height:1; color:color-mix(in srgb,var(--ink-3) 60%,transparent)}
+.stars span.on{color:#FFC93C; text-shadow:0 0 16px rgba(255,201,60,.7), 0 2px 0 rgba(0,0,0,.4);
+  animation:star .5s cubic-bezier(.2,1.8,.5,1) both}
+@keyframes star{from{transform:scale(0) rotate(-40deg); opacity:0}}
+
+.lbtabs{grid-template-columns:repeat(4,1fr)}
+
+/* ── friends league ───────────────────────────────────────────────── */
+.lgor{text-align:center; font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:var(--ink-3)}
+.lgjoin input{text-transform:uppercase; letter-spacing:.3em; flex:2}
+.lgjoin button{flex:1}
+.lgtitle{font-family:"Alfa Slab One",Georgia,serif; font-weight:400; font-size:20px}
+
+/* ── power-ups ────────────────────────────────────────────────────── */
+/* with power-ups showing there are six buttons: the hint text makes room */
+#s-play .bar-row.powers .hint{display:none}
+#s-play .bar-row.powers .btns{width:100%; justify-content:space-between}
+@media (max-width:380px){
+  #s-play .bar-row.powers .btns button.icon{width:40px; min-height:40px}
+}
+/* landscape and laptop columns are narrow: let the buttons wrap */
+#s-play .bar-row .btns{flex-wrap:wrap}
+.pw.armed{border-color:var(--accent); box-shadow:0 0 0 2px var(--accent), 0 0 16px -4px var(--accent)}
+.tray.rotating .slot:not(.taken):not(.dead){animation:pulse .6s ease-in-out infinite alternate; cursor:pointer}
+.tray.rotating .piece{cursor:pointer}
+.tray.rotating .slot:not(.taken)::before{
+  content:"↻"; font-size:18px; line-height:1; color:var(--accent); margin-bottom:-4px;
+}
+
+.over .acts.rescue{flex-direction:column; max-width:300px}
+.over .acts.rescue button{flex:none; min-height:46px}
+.over .acts.rescue b{font-weight:400; color:var(--ink-2); margin-left:4px; letter-spacing:.04em}
+.over .acts.rescue #rs-giveup{background:none; box-shadow:none; border-color:transparent; color:var(--ink-2)}
+
+/* ── adventure map ────────────────────────────────────────────────── */
+#s-map > header{align-items:center}
+.mapplay{min-height:50px; font-size:13px}
+.map{display:flex; flex-direction:column; gap:8px}
+.mapch{margin-top:8px}
+.maprow{display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); gap:6px}
+.lvl{
+  aspect-ratio:1; min-height:0; padding:4px 2px; border-radius:10px;
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:1px;
+  text-transform:none; letter-spacing:0; position:relative;
+}
+.lvl .ln{font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:15px; font-weight:500; color:var(--ink)}
+.lvl .lt{position:absolute; top:3px; right:5px; font-size:9px; color:var(--ink-3)}
+.lvl .ls{display:flex; gap:0; font-size:9px; line-height:1}
+.lvl .ls i{font-style:normal; color:color-mix(in srgb,var(--ink-3) 55%,transparent)}
+.lvl .ls i.on{color:#FFC93C}
+.lvl.done{background:linear-gradient(180deg,color-mix(in srgb,var(--good) 14%,var(--panel)),var(--panel-2))}
+.lvl.next{border-color:var(--accent); box-shadow:0 0 0 1px var(--accent), 0 0 18px -6px var(--accent); animation:breathe 2.4s ease-in-out infinite}
+.lvl.locked{opacity:.4}
+.lvl.locked .ln{font-size:12px}
+.maplegend{font-size:12px; text-align:center}
+@media (min-width:1000px){ #s-map{width:min(760px,100%); margin:0 auto} .lvl .ln{font-size:18px} .lvl .ls{font-size:12px} }
+
+/* ── daily quests ─────────────────────────────────────────────────── */
+.quests{display:flex; flex-direction:column; gap:10px}
+.qlist{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:6px}
+.q{display:grid; grid-template-columns:22px 1fr auto; gap:10px; align-items:center;
+  padding:9px 10px; border-radius:8px; background:color-mix(in srgb,var(--bg) 40%,transparent)}
+.qtick{width:20px; height:20px; border-radius:50%; display:grid; place-items:center; font-size:12px;
+  border:2px solid var(--ink-3); color:var(--accent-ink)}
+.q.easy .qtick{border-color:var(--good)}
+.q.medium .qtick{border-color:var(--accent)}
+.q.hard .qtick{border-color:var(--accent-2)}
+.q.done .qtick{background:var(--good); border-color:var(--good)}
+.qbody{display:flex; flex-direction:column; gap:5px; min-width:0}
+.qtext{font-size:13.5px; color:var(--ink)}
+.q.done .qtext{color:var(--ink-2); text-decoration:line-through; text-decoration-color:color-mix(in srgb,var(--ink-2) 60%,transparent)}
+.qbar{height:5px; border-radius:3px; overflow:hidden; background:color-mix(in srgb,var(--bg) 60%,#000 20%)}
+.qbar i{display:block; height:100%; border-radius:3px; background:var(--accent); transition:width .3s ease}
+.q.easy .qbar i{background:var(--good)} .q.hard .qbar i{background:var(--accent-2)}
+.qside{display:flex; flex-direction:column; align-items:flex-end; gap:2px}
+.qval{font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:11px; color:var(--ink-2)}
+.qrew{font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:10px; letter-spacing:.04em; color:var(--accent); white-space:nowrap}
+.qbonus{font-size:12px}
+
+/* ── puzzle archive ───────────────────────────────────────────────── */
+.mode.arch .num{color:var(--ink-2); font-size:20px}
+#s-archive > header{align-items:center}
+.archlist{display:flex; flex-direction:column; gap:6px}
+.archrow{
+  display:grid; grid-template-columns:56px 1fr auto; align-items:center; gap:10px; text-align:left;
+  padding:11px 12px; text-transform:none; letter-spacing:0; font-family:inherit; border-radius:9px;
+}
+.archrow .ad{font-size:14px; color:var(--accent)}
+.archrow .ainfo{display:flex; flex-direction:column; min-width:0}
+.archrow .ainfo b{font-size:14px; font-weight:600; color:var(--ink)}
+.archrow .ainfo span{font-size:12px; color:var(--ink-2); overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.archrow .ago{font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--accent)}
+@media (min-width:1000px){ #s-archive{width:min(760px,100%); margin:0 auto} }
+
+/* ── seasonal ─────────────────────────────────────────────────────── */
+.mode.season{
+  border-color:var(--accent);
+  background:
+    radial-gradient(120% 160% at 100% 0%, color-mix(in srgb,#FF9F1C 22%,transparent) 0%, transparent 60%),
+    radial-gradient(120% 160% at 0% 100%, color-mix(in srgb,#8B3DFF 20%,transparent) 0%, transparent 60%),
+    linear-gradient(180deg,var(--panel),var(--panel-2));
+  box-shadow:0 3px 0 var(--shadow), 0 0 26px -8px #FF9F1C;
+}
+.mode.season .num{color:#FFB13B}
+.seasondeco{font-size:22px; letter-spacing:.2em; white-space:nowrap; flex-shrink:0;
+  margin-left:auto; margin-right:10px; animation:float 3s ease-in-out infinite alternate}
+@media (max-width:480px){ .seasondeco{font-size:15px; letter-spacing:.05em; margin-right:4px} }
+@keyframes float{to{transform:translateY(-4px)}}
+
+/* ── install prompt ───────────────────────────────────────────────── */
+.install{display:flex; flex-direction:column; gap:12px; border-color:var(--accent);
+  box-shadow:0 3px 0 var(--shadow), 0 0 24px -10px var(--accent)}
+.ihead{display:flex; gap:12px; align-items:center}
+.iicon{font-size:30px; line-height:1}
+.ihead b{display:block; font-size:15px; color:var(--ink)}
+.ihead span{display:block; font-size:12.5px; color:var(--ink-2)}
+.iios{font-size:13px}
+.iios svg{width:16px; height:16px; vertical-align:-3px; color:var(--accent)}

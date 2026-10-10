@@ -1,0 +1,25 @@
+node_modules/
+dist/
+dist-single/
+.DS_Store
+*.log
+
+# Capacitor native projects: commit these once generated, but never these:
+android/app/build/
+android/.gradle/
+android/local.properties
+android/app/*.keystore
+android/app/*.jks
+ios/App/Pods/
+ios/App/build/
+ios/App/App/public/
+android/app/src/main/assets/public/
+
+# secrets
+.env
+.env.*
+google-services.json
+GoogleService-Info.plist
+
+# Local Netlify folder
+.netlify

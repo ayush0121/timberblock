@@ -1,0 +1,40 @@
+{
+  "name": "timberblock",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Timberblock - a block puzzle for iOS, Android and the web",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "build:single": "vite build --mode single",
+    "preview": "vite preview",
+    "sync": "npm run build && cap sync",
+    "android": "npm run sync && cap open android",
+    "ios": "npm run sync && cap open ios",
+    "verify": "node server/verify.js --demo",
+    "build:artifact": "vite build --mode single && node scripts/artifact.mjs",
+    "icons": "node scripts/icons.mjs",
+    "deploy": "npm run build",
+    "og": "\"C:/Program Files/Google/Chrome/Application/chrome.exe\" --headless=new --hide-scrollbars --force-device-scale-factor=1 --window-size=1200,630 --virtual-time-budget=5000 --screenshot=public/icons/og-card.png scripts/og-card.html",
+    "test:e2e": "node tests/tests.mjs"
+  },
+  "dependencies": {
+    "@capacitor/android": "^7.0.0",
+    "@capacitor/app": "^7.0.0",
+    "@capacitor/core": "^7.0.0",
+    "@capacitor/haptics": "^7.0.0",
+    "@capacitor/ios": "^7.0.0",
+    "@capacitor/local-notifications": "^7.0.7",
+    "@capacitor/preferences": "^7.0.0",
+    "@capacitor/splash-screen": "^7.0.0",
+    "@capacitor/status-bar": "^7.0.0",
+    "@netlify/blobs": "^11.1.4"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^7.0.0",
+    "playwright-core": "^1.48.2",
+    "vite": "^6.0.0",
+    "vite-plugin-singlefile": "^2.0.3"
+  }
+}

@@ -1,0 +1,196 @@
+/* The daily leaderboard card, the stats panel, and the layouts for every
+   screen shape: phones, landscape phones, tablets, laptops and desktops. */
+
+/* ── leaderboard card ─────────────────────────────────────────────── */
+.lb{display:flex; flex-direction:column; gap:10px}
+.lbhead{display:flex; justify-content:space-between; align-items:baseline; gap:10px}
+.lbday{font-size:11px; letter-spacing:.12em; color:var(--accent)}
+.lbme{
+  font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:11.5px; letter-spacing:.04em;
+  color:var(--ink); padding:8px 10px; border-radius:7px;
+  background:color-mix(in srgb,var(--accent) 14%,transparent);
+  border:1px solid color-mix(in srgb,var(--accent) 45%,transparent);
+}
+.lblist{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:3px}
+.lblist:empty{display:none}
+.lblist li{
+  display:grid; grid-template-columns:26px 1fr auto; align-items:center; gap:8px;
+  padding:6px 8px; border-radius:6px; font-size:13px;
+  background:color-mix(in srgb,var(--bg) 40%,transparent);
+}
+.lblist .rk{
+  font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:11px; color:var(--ink-2);
+  width:22px; height:22px; border-radius:50%; display:grid; place-items:center;
+}
+.lblist .nm{overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-weight:500}
+.lblist .sc{font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:13px; color:var(--accent)}
+.lblist .medal .rk{color:#1b1206; font-weight:500}
+.lblist .r1 .rk{background:linear-gradient(150deg,#FFE58A,#E0A91B)}
+.lblist .r2 .rk{background:linear-gradient(150deg,#F1F3F7,#A9B0BC)}
+.lblist .r3 .rk{background:linear-gradient(150deg,#F3C39A,#B76E35)}
+.lblist li.me{
+  background:color-mix(in srgb,var(--accent) 18%,transparent);
+  box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--accent) 55%,transparent);
+}
+.lbnote{font-size:12px}
+
+/* end-of-run placing */
+.over .rankline{
+  font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:11px; letter-spacing:.08em;
+  color:var(--ink); margin:-4px 0 10px; padding:5px 12px; border-radius:20px;
+  border:1px solid var(--rule); background:color-mix(in srgb,var(--panel) 80%,transparent);
+}
+
+/* ── stats panel ──────────────────────────────────────────────────── */
+.statgrid{display:grid; grid-template-columns:1fr 1fr; gap:8px; margin:10px 0 0}
+.statgrid div{padding:9px 10px; border-radius:7px; background:color-mix(in srgb,var(--bg) 40%,transparent)}
+.statgrid dt{
+  font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:9px; letter-spacing:.16em;
+  text-transform:uppercase; color:var(--ink-2);
+}
+.statgrid dd{margin:3px 0 0; font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:19px; color:var(--ink)}
+.tips{margin-top:12px; font-size:12px}
+
+/* ── phones and tablets: one column, side panels off during play ─── */
+.homegrid, .homegrid > .col{display:flex; flex-direction:column; gap:14px}
+#s-play > #playstats, #s-play > #lb-play{display:none}
+
+#s-home:not([hidden]) .col > *{animation:rise-in .4s cubic-bezier(.2,1.2,.4,1) both}
+#s-home:not([hidden]) .col > :nth-child(2){animation-delay:.04s}
+#s-home:not([hidden]) .col > :nth-child(3){animation-delay:.08s}
+#s-home:not([hidden]) .col > :nth-child(n+4){animation-delay:.12s}
+
+.lblist li.gap{display:block; height:6px; padding:0; background:none;
+  border-top:1px dashed var(--rule); margin:3px 8px 0; border-radius:0}
+
+/* ═══════════════════════════════════════════════════════════════════
+   Screen-size layouts. The board is always the biggest square the
+   viewport allows; everything else arranges around it.
+
+     portrait phones/tablets   score / board / tray / controls (base CSS)
+     short portrait (<600px)   same, with tighter spacing
+     landscape phones          controls | board | tray
+     laptops  1000-1399px      score + top 5 | board | tray
+     desktops 1400px+          score + stats | board | tray | leaderboard
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* the tray stood on end beside the board (read by ui/tray.js) */
+@media (orientation:landscape) and (max-height:599px), (min-width:1000px) and (min-height:600px){
+  #s-play > #tray{
+    --vertical:1;
+    grid-area:tray; align-self:stretch;
+    grid-template-columns:1fr; grid-template-rows:repeat(3,minmax(0,1fr));
+    gap:6px; padding:10px 8px;
+  }
+  #s-play > #tray .slot{min-height:0; justify-content:center; padding-bottom:6px}
+  #s-play > .boardwrap{grid-area:board; align-self:center}
+  #s-play > header{grid-area:head}
+  #s-play > #prohud{grid-area:hud}
+  #s-play > #chalhud{grid-area:chal}
+  #s-play > .bar-row{grid-area:bar; align-self:end; margin:0}
+  #s-play .bar-row .hint{display:none}
+  #s-play .bar-row .btns{width:100%}
+  #s-play .bar-row .btns button{flex:1}
+  #s-play{display:grid; justify-content:center; align-content:center; flex:0 0 auto; margin:auto 0}
+}
+
+/* ── short portrait phones (iPhone SE 1st gen and similar) ────────── */
+@media (orientation:portrait) and (max-height:620px){
+  body{padding-top:calc(8px + env(safe-area-inset-top)); padding-bottom:calc(10px + env(safe-area-inset-bottom))}
+  #s-play{gap:8px}
+  #s-play .tray{padding-top:8px; padding-bottom:6px}
+}
+
+/* ── tablets in portrait: a bigger board than a phone gets ────────── */
+@media (orientation:portrait) and (min-width:700px) and (min-height:900px){
+  .app{width:min(94vw,640px,max(300px,(100dvh - 300px) / 1.27))}
+}
+
+/* ── landscape phones ─────────────────────────────────────────────── */
+@media (orientation:landscape) and (max-height:599px){
+  body{padding:
+    calc(8px + env(safe-area-inset-top)) calc(12px + env(safe-area-inset-right))
+    calc(8px + env(safe-area-inset-bottom)) calc(12px + env(safe-area-inset-left))}
+  .app{width:100%}
+  #s-gate, #s-home{width:min(560px,100%); margin:0 auto}
+  #s-play{
+    --bw:min(calc(100dvh - 20px), calc(100vw - 360px));
+    grid-template-columns:minmax(140px,200px) var(--bw) minmax(110px,150px);
+    grid-template-rows:auto auto auto 1fr auto;
+    grid-template-areas:
+      "head board tray"
+      "hud  board tray"
+      "chal board tray"
+      ".    board tray"
+      "bar  board tray";
+    column-gap:14px; row-gap:8px;
+  }
+  #s-play > header{flex-direction:column; align-items:stretch; gap:8px}
+  #s-play > header h1{font-size:18px !important}
+  #s-play > header .plate{min-width:0; text-align:left; padding:8px 12px}
+  #s-play > header .plate .v{font-size:24px}
+  #s-play .pro{padding:10px}
+  #s-play .gauge{grid-template-columns:1fr auto; row-gap:4px}
+  #s-play .gauge .meter{grid-column:1 / -1; grid-row:2}
+  #s-play .gauge .val{min-width:0}
+  #s-play .board{padding:8px}
+  .over h2{font-size:20px}
+  .over .fin{font-size:30px}
+}
+
+/* ── laptops and desktops ─────────────────────────────────────────── */
+@media (min-width:1000px){
+  .app{width:min(1560px,100%)}
+
+  /* home: modes on the left, leaderboard + look + share on the right */
+  #s-home{width:min(1040px,100%); margin:0 auto; gap:20px}
+  .homegrid{display:grid; grid-template-columns:minmax(0,1.15fr) minmax(0,1fr); gap:20px; align-items:start}
+  #s-home h1{font-size:40px}
+  .logo{width:72px; height:72px}
+  .mode{padding:18px 20px}
+  .mode .mh{font-size:22px}
+  #lb-home .lblist li{padding:8px 10px; font-size:14px}
+  #s-gate{width:min(470px,100%); margin:0 auto}
+}
+
+@media (min-width:1000px) and (min-height:600px){
+  #s-play{column-gap:24px; row-gap:14px; grid-template-rows:auto auto auto 1fr auto}
+  #s-play > header{flex-direction:column; align-items:stretch; gap:12px}
+  #s-play > header .plate{text-align:left; padding:12px 16px}
+  #s-play > header .plate .v{font-size:36px}
+  #s-play .gauge .val{min-width:64px}
+  #s-play > #lb-play{display:flex; grid-area:lb; align-self:start}
+}
+
+/* laptops: there's no room for a fourth column, so a top-5 board joins the score */
+@media (min-width:1000px) and (max-width:1399px) and (min-height:600px){
+  #s-play{
+    --bw:min(640px, calc(100dvh - 48px), calc(100vw - 500px));
+    grid-template-columns:minmax(220px,280px) var(--bw) minmax(130px,170px);
+    grid-template-areas:
+      "head board tray"
+      "hud  board tray"
+      "chal board tray"
+      "lb   board tray"
+      "bar  board tray";
+  }
+  #lb-play .lblist li:nth-child(n+6):not(.me):not(.gap){display:none}
+  #lb-play .lblist:not(:empty) ~ .lbnote{display:none}
+  #lb-play{gap:8px; padding:12px}
+  #lb-play .lblist li{padding:5px 8px}
+}
+
+/* desktops: score + stats | board | tray | full leaderboard */
+@media (min-width:1400px) and (min-height:600px){
+  #s-play{
+    --bw:min(760px, calc(100dvh - 48px), calc(100vw - 860px));
+    grid-template-columns:minmax(230px,280px) var(--bw) minmax(140px,180px) minmax(250px,300px);
+    grid-template-areas:
+      "head  board tray lb"
+      "hud   board tray lb"
+      "chal  board tray lb"
+      "stats board tray lb"
+      "bar   board tray lb";
+  }
+  #s-play > #playstats{display:block; grid-area:stats; align-self:start}
+}

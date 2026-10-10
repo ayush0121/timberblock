@@ -1,0 +1,44 @@
+<!doctype html>
+<!-- Source for public/icons/og-card.png (1200x630, the link-preview image).
+     Regenerate with: npm run og -->
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Archivo:wght@500;700&display=swap">
+<style>
+  html,body{margin:0;width:1200px;height:630px;overflow:hidden;background:#080614}
+  body{display:flex;align-items:center;font-family:Archivo,sans-serif;color:#EDE9FF;
+       background:radial-gradient(800px 500px at 85% 50%,#1b1240 0%,#080614 70%)}
+  .l{flex:1;padding:0 40px 0 70px}
+  h1{font:400 84px/1 "Alfa Slab One",serif;margin:0;letter-spacing:-1px}
+  h1 span{color:#22E7FF;text-shadow:0 0 28px rgba(34,231,255,.55)}
+  .t{font-size:40px;font-weight:700;margin:26px 0 14px;color:#fff}
+  .s{font-size:28px;color:#B9B2E0;line-height:1.35}
+  .u{margin-top:40px;display:inline-block;font-size:26px;font-weight:700;color:#080614;
+     background:#9BFF3D;padding:12px 26px;border-radius:999px}
+  .b{flex:none;box-sizing:border-box;width:440px;height:440px;margin-right:70px;grid-template-rows:repeat(8,1fr);display:grid;grid-template-columns:repeat(8,1fr);
+     gap:6px;padding:14px;background:#120c2a;border-radius:22px;
+     box-shadow:0 0 0 2px rgba(160,140,255,.25),0 0 80px rgba(168,85,247,.35)}
+  .c{border-radius:7px;background:#1c1540}
+  .c.f{background:linear-gradient(#fff3 0,transparent 60%),var(--k);box-shadow:0 0 14px var(--k)}
+</style></head>
+<body>
+  <div class="l">
+    <h1>Timber<span>block</span></h1>
+    <div class="t">The daily block puzzle</div>
+    <div class="s">Same 8×8 board for everyone, every day.<br>One attempt. Free, no download.</div>
+    <div class="u">Play at timberblock.online</div>
+  </div>
+  <div class="b" id="b"></div>
+<script>
+  const K = ["#FF2D95","#22E7FF","#9BFF3D","#FFB020","#A855F7","#FF5C3A","#3B82F6"];
+  const g = [
+    "11..2222","11..2..3","44...553","4.66.5.3",
+    "4.66....","777.1188","..7.1.88","00....88"];
+  const b = document.getElementById("b");
+  for (const row of g) for (const ch of row) {
+    const d = document.createElement("div");
+    d.className = "c" + (ch === "." ? "" : " f");
+    if (ch !== ".") d.style.setProperty("--k", K[(+ch) % K.length]);
+    b.appendChild(d);
+  }
+</script>
+</body></html>

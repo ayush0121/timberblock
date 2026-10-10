@@ -1,0 +1,308 @@
+/* ═══════════════════════════════════════════════════════════════════
+   Earned skins. Same token set as styles/themes.css; each is unlocked by
+   an achievement (ui/themes.js `unlock`).
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* ── FROST · glacier ice ─────────────────────────────────────────── */
+:root[data-skin="frost"]{
+  --bg:#06121C; --bg-glow-1:#0E3550; --bg-glow-2:#103B3A;
+  --frame:#0F2A3D; --frame-hi:#24506E; --frame-lo:#071826;
+  --socket:#0C2233; --socket-in:#081A28; --socket-edge:rgba(160,220,255,.12);
+  --ink:#EAF7FF; --ink-2:#8FB4CC; --ink-3:#5F8299;
+  --rule:rgba(160,220,255,.22);
+  --accent:#7FD8FF; --accent-2:#5CF2C2; --accent-ink:#04121B;
+  --panel:#0D2232; --panel-2:#0A1A27; --shadow:rgba(0,0,0,.7);
+  --danger:#FF6B8B; --good:#5CF2C2;
+  --plate-1:#123048; --plate-2:#0B2133; --plate-edge:#7FD8FF;
+  --board-radius:14px; --cell-radius:6px; --tray-tex:none;
+}
+:root[data-skin="frost"] body{
+  background:
+    radial-gradient(80% 50% at 20% -5%, var(--bg-glow-1) 0%, transparent 60%),
+    radial-gradient(70% 45% at 90% 10%, var(--bg-glow-2) 0%, transparent 55%),
+    var(--bg);
+}
+:root[data-skin="frost"] .board{
+  background:linear-gradient(160deg,var(--frame-hi),var(--frame) 50%,var(--frame-lo));
+  box-shadow:inset 0 1px 0 rgba(220,245,255,.35), 0 0 0 1px rgba(127,216,255,.25),
+             0 0 30px -10px rgba(127,216,255,.55), 0 14px 30px var(--shadow);
+}
+:root[data-skin="frost"] .cell{
+  background:linear-gradient(180deg,var(--socket-in),var(--socket));
+  box-shadow:inset 0 0 0 1px var(--socket-edge), inset 0 2px 5px rgba(0,0,0,.5);
+}
+:root[data-skin="frost"] .blk{
+  border-radius:var(--cell-radius);
+  background:linear-gradient(155deg, var(--hi) 0%, var(--base) 45%, var(--lo) 100%);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.55), inset 0 -4px 8px -3px rgba(0,30,60,.5),
+             0 0 12px -3px var(--base);
+}
+:root[data-skin="frost"] .blk::after{
+  content:''; position:absolute; inset:3px; border-radius:3px; pointer-events:none;
+  background:linear-gradient(125deg, rgba(255,255,255,.75) 0 12%, transparent 30%,
+             transparent 70%, rgba(255,255,255,.25) 85%, transparent 95%);
+}
+
+/* ── MAGMA · molten rock ─────────────────────────────────────────── */
+:root[data-skin="magma"]{
+  --bg:#120705; --bg-glow-1:#4A1406; --bg-glow-2:#2B0A12;
+  --frame:#2A1410; --frame-hi:#4A231A; --frame-lo:#140806;
+  --socket:#1E0E0B; --socket-in:#140906; --socket-edge:rgba(255,120,60,.10);
+  --ink:#FFF1E8; --ink-2:#C2967F; --ink-3:#8C6A58;
+  --rule:rgba(255,140,80,.22);
+  --accent:#FF7A2F; --accent-2:#FFB000; --accent-ink:#1A0802;
+  --panel:#21100C; --panel-2:#170A07; --shadow:rgba(0,0,0,.75);
+  --danger:#FF4D6D; --good:#D8F03A;
+  --plate-1:#33170F; --plate-2:#220E09; --plate-edge:#FF7A2F;
+  --board-radius:10px; --cell-radius:4px; --tray-tex:none;
+}
+:root[data-skin="magma"] body{
+  background:
+    radial-gradient(90% 55% at 50% 110%, var(--bg-glow-1) 0%, transparent 60%),
+    radial-gradient(70% 45% at 10% -5%, var(--bg-glow-2) 0%, transparent 55%),
+    var(--bg);
+}
+:root[data-skin="magma"] .board{
+  background:linear-gradient(165deg,var(--frame-hi),var(--frame) 45%,var(--frame-lo));
+  box-shadow:inset 0 1px 0 rgba(255,180,120,.18), 0 0 0 1px rgba(255,122,47,.3),
+             0 0 40px -12px rgba(255,90,31,.6), 0 14px 30px var(--shadow);
+}
+:root[data-skin="magma"] .cell{
+  background:linear-gradient(180deg,var(--socket-in),var(--socket));
+  box-shadow:inset 0 0 0 1px rgba(0,0,0,.6), inset 0 2px 4px rgba(0,0,0,.6);
+}
+:root[data-skin="magma"] .blk{
+  border-radius:var(--cell-radius);
+  background:
+    radial-gradient(60% 60% at 70% 75%, var(--hi) 0%, transparent 70%),
+    linear-gradient(160deg, var(--base) 0%, var(--lo) 100%);
+  box-shadow:inset 0 0 0 1px rgba(0,0,0,.55), inset 0 2px 0 rgba(255,220,180,.35),
+             0 0 14px -2px var(--base);
+}
+:root[data-skin="magma"] .blk::after{
+  content:''; position:absolute; inset:0; border-radius:inherit; pointer-events:none; opacity:.55;
+  background:
+    linear-gradient(115deg, transparent 46%, rgba(255,240,200,.8) 48%, transparent 51%),
+    linear-gradient(35deg, transparent 62%, rgba(255,240,200,.6) 64%, transparent 66%);
+}
+
+/* ── CANDY · sweet shop (light) ──────────────────────────────────── */
+:root[data-skin="candy"]{
+  --bg:#FFE9F1; --bg-glow-1:#FFF6FA; --bg-glow-2:#FFD6E6;
+  --frame:#F4A6C4; --frame-hi:#FBC6DA; --frame-lo:#E07FA6;
+  --socket:#FFDCE9; --socket-in:#F9CADD; --socket-edge:rgba(160,40,90,.10);
+  --ink:#4A1830; --ink-2:#8A4D68; --ink-3:#A87790;
+  --rule:rgba(140,40,90,.18);
+  --accent:#D6337A; --accent-2:#7A3FD6; --accent-ink:#FFF5FA;
+  --panel:#FFF3F8; --panel-2:#FFE6F0; --shadow:rgba(140,40,90,.22);
+  --danger:#C42747; --good:#14936B;
+  --plate-1:#FFD1E3; --plate-2:#F8B4CF; --plate-edge:#D6337A;
+  --board-radius:18px; --cell-radius:9px;
+  --tray-tex:radial-gradient(circle at 1px 1px, rgba(214,51,122,.10) 1px, transparent 1.5px) 0 0/10px 10px;
+}
+:root[data-skin="candy"] body{
+  background:radial-gradient(120% 80% at 50% -10%, var(--bg-glow-1) 0%, var(--bg-glow-2) 75%), var(--bg);
+}
+:root[data-skin="candy"] .board{
+  background:linear-gradient(165deg,var(--frame-hi),var(--frame) 50%,var(--frame-lo));
+  box-shadow:inset 0 2px 0 rgba(255,255,255,.5), inset 0 -3px 0 rgba(0,0,0,.08),
+             0 6px 0 var(--frame-lo), 0 14px 24px var(--shadow);
+}
+:root[data-skin="candy"] .cell{
+  background:linear-gradient(180deg,var(--socket-in),var(--socket));
+  box-shadow:inset 0 2px 3px rgba(140,40,90,.18);
+}
+:root[data-skin="candy"] .blk{
+  border-radius:var(--cell-radius);
+  background:radial-gradient(110% 120% at 30% 20%, var(--hi), var(--base) 55%, var(--lo));
+  box-shadow:inset 0 -4px 0 rgba(0,0,0,.14), inset 0 2px 0 rgba(255,255,255,.55),
+             0 3px 4px rgba(140,40,90,.25);
+}
+:root[data-skin="candy"] .blk::after{
+  content:''; position:absolute; left:18%; top:12%; width:28%; height:22%;
+  border-radius:50%; background:rgba(255,255,255,.7); transform:rotate(-20deg);
+}
+:root[data-skin="candy"] .callout b{
+  background:linear-gradient(180deg,#fff 0%,#FF6FAE 55%,#C93A7C 100%);
+  -webkit-background-clip:text; background-clip:text;
+  filter:drop-shadow(1.5px 0 0 #4A1830) drop-shadow(-1.5px 0 0 #4A1830)
+         drop-shadow(0 1.5px 0 #4A1830) drop-shadow(0 -1.5px 0 #4A1830) drop-shadow(0 4px 0 rgba(74,24,48,.5));
+}
+:root[data-skin="candy"] .callout small{background:rgba(255,245,250,.92)}
+
+/* ── PIXEL · 8-bit arcade ────────────────────────────────────────── */
+:root[data-skin="pixel"]{
+  --bg:#0E1116; --bg-glow-1:#1B2230; --bg-glow-2:#15201C;
+  --frame:#232A36; --frame-hi:#3A4456; --frame-lo:#141820;
+  --socket:#171C25; --socket-in:#11151C; --socket-edge:rgba(255,255,255,.05);
+  --ink:#F2F5F8; --ink-2:#9AA6B6; --ink-3:#6B7686;
+  --rule:rgba(255,255,255,.14);
+  --accent:#F5C518; --accent-2:#E8384F; --accent-ink:#1A1400;
+  --panel:#1A2029; --panel-2:#141920; --shadow:rgba(0,0,0,.8);
+  --danger:#E8384F; --good:#7ED321;
+  --plate-1:#232A36; --plate-2:#1A2029; --plate-edge:#F5C518;
+  --board-radius:0px; --cell-radius:0px; --tray-tex:none;
+}
+:root[data-skin="pixel"] body{
+  background:
+    repeating-linear-gradient(0deg, rgba(0,0,0,.18) 0 1px, transparent 1px 3px),
+    radial-gradient(80% 50% at 50% -10%, var(--bg-glow-1) 0%, transparent 60%),
+    var(--bg);
+}
+:root[data-skin="pixel"] .board{
+  background:var(--frame);
+  box-shadow:0 0 0 4px var(--frame-hi), 0 0 0 8px var(--frame-lo), 8px 8px 0 8px rgba(0,0,0,.55);
+}
+:root[data-skin="pixel"] .cell{background:var(--socket); box-shadow:inset 2px 2px 0 rgba(0,0,0,.45)}
+:root[data-skin="pixel"] .blk{
+  border-radius:0;
+  background:var(--base);
+  /* hard bevel: light top-left, dark bottom-right, like a sprite */
+  box-shadow:inset 4px 4px 0 var(--hi), inset -4px -4px 0 var(--lo);
+  image-rendering:pixelated;
+}
+:root[data-skin="pixel"] .blk::after{
+  content:''; position:absolute; left:22%; top:22%; width:16%; height:16%; background:rgba(255,255,255,.85);
+}
+:root[data-skin="pixel"] .card, :root[data-skin="pixel"] .mode, :root[data-skin="pixel"] button,
+:root[data-skin="pixel"] .tray, :root[data-skin="pixel"] .plate{border-radius:0}
+
+/* ── SPACE · deep field ──────────────────────────────────────────── */
+:root[data-skin="space"]{
+  --bg:#05030F; --bg-glow-1:#1A0F3D; --bg-glow-2:#0A2238;
+  --frame:#0F0B24; --frame-hi:#241B4F; --frame-lo:#070514;
+  --socket:#0C0920; --socket-in:#080616; --socket-edge:rgba(170,150,255,.10);
+  --ink:#F0EEFF; --ink-2:#9C96C8; --ink-3:#6D6896;
+  --rule:rgba(170,150,255,.20);
+  --accent:#8EA8FF; --accent-2:#E6B5FF; --accent-ink:#070514;
+  --panel:#100C26; --panel-2:#0B081C; --shadow:rgba(0,0,0,.8);
+  --danger:#FF6B6B; --good:#6EE7A8;
+  --plate-1:#171134; --plate-2:#0E0A24; --plate-edge:#8EA8FF;
+  --board-radius:20px; --cell-radius:50%; --tray-tex:none;
+}
+:root[data-skin="space"] body{
+  background:
+    radial-gradient(1px 1px at 12% 18%, #fff 50%, transparent 51%),
+    radial-gradient(1px 1px at 78% 9%, #fff 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 33% 72%, #cfd8ff 50%, transparent 51%),
+    radial-gradient(1px 1px at 61% 44%, #fff 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 89% 63%, #ffe8ff 50%, transparent 51%),
+    radial-gradient(1px 1px at 22% 91%, #fff 50%, transparent 51%),
+    radial-gradient(1px 1px at 47% 27%, #dfe6ff 50%, transparent 51%),
+    radial-gradient(70% 45% at 85% 0%, var(--bg-glow-1) 0%, transparent 60%),
+    radial-gradient(60% 40% at 0% 100%, var(--bg-glow-2) 0%, transparent 60%),
+    var(--bg);
+  background-attachment:fixed;
+}
+:root[data-skin="space"] .board{
+  background:radial-gradient(120% 120% at 30% 0%, var(--frame-hi), var(--frame) 50%, var(--frame-lo));
+  box-shadow:inset 0 1px 0 rgba(200,190,255,.25), 0 0 0 1px rgba(142,168,255,.25),
+             0 0 40px -12px rgba(142,168,255,.55), 0 14px 30px var(--shadow);
+}
+:root[data-skin="space"] .cell{
+  border-radius:50%;
+  background:radial-gradient(circle at 50% 40%, var(--socket), var(--socket-in));
+  box-shadow:inset 0 0 0 1px var(--socket-edge);
+}
+:root[data-skin="space"] .blk{
+  border-radius:50%;
+  background:radial-gradient(circle at 32% 28%, var(--hi) 0%, var(--base) 45%, var(--lo) 100%);
+  box-shadow:inset -3px -4px 8px rgba(0,0,0,.45), 0 0 14px -3px var(--base);
+}
+:root[data-skin="space"] .blk::after{
+  content:''; position:absolute; left:20%; top:16%; width:26%; height:20%;
+  border-radius:50%; background:rgba(255,255,255,.65); filter:blur(.5px);
+}
+
+/* ── SPOOKY · Halloween 2026 ─────────────────────────────────────── */
+:root[data-skin="spooky"]{
+  --bg:#0D0814; --bg-glow-1:#3A1240; --bg-glow-2:#3A1E05;
+  --frame:#1E1226; --frame-hi:#3A2246; --frame-lo:#0D0712;
+  --socket:#170E1F; --socket-in:#100916; --socket-edge:rgba(255,122,26,.10);
+  --ink:#F6EEFF; --ink-2:#B49CC8; --ink-3:#7D6A90;
+  --rule:rgba(255,122,26,.22);
+  --accent:#FF7A1A; --accent-2:#8B3DFF; --accent-ink:#1A0A00;
+  --panel:#1B1022; --panel-2:#130B19; --shadow:rgba(0,0,0,.8);
+  --danger:#FF4D6D; --good:#7CE03B;
+  --plate-1:#2A1630; --plate-2:#1B0E20; --plate-edge:#FF7A1A;
+  --board-radius:16px; --cell-radius:8px; --tray-tex:none;
+}
+:root[data-skin="spooky"] body{
+  background:
+    radial-gradient(18% 12% at 82% 8%, rgba(255,238,200,.55) 0%, rgba(255,210,120,.18) 40%, transparent 70%),
+    radial-gradient(120% 40% at 50% 105%, rgba(140,120,170,.18) 0%, transparent 60%),
+    radial-gradient(90% 55% at 10% -5%, var(--bg-glow-1) 0%, transparent 60%),
+    radial-gradient(70% 45% at 95% 100%, var(--bg-glow-2) 0%, transparent 55%),
+    var(--bg);
+  background-attachment:fixed;
+}
+:root[data-skin="spooky"] .board{
+  background:linear-gradient(165deg,var(--frame-hi),var(--frame) 50%,var(--frame-lo));
+  box-shadow:inset 0 1px 0 rgba(255,200,150,.18), 0 0 0 1px rgba(255,122,26,.3),
+             0 0 40px -12px rgba(255,122,26,.55), 0 14px 30px var(--shadow);
+}
+:root[data-skin="spooky"] .cell{
+  background:linear-gradient(180deg,var(--socket-in),var(--socket));
+  box-shadow:inset 0 0 0 1px var(--socket-edge), inset 0 2px 5px rgba(0,0,0,.55);
+}
+:root[data-skin="spooky"] .blk{
+  border-radius:var(--cell-radius);
+  background:radial-gradient(120% 120% at 30% 20%, var(--hi), var(--base) 50%, var(--lo));
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.2), inset 0 -4px 8px -3px rgba(0,0,0,.6), 0 0 12px -2px var(--base);
+}
+/* a jack-o'-lantern face in every block: triangle eyes, jagged grin */
+:root[data-skin="spooky"] .blk::after{
+  content:''; position:absolute; inset:20%; pointer-events:none; opacity:.55;
+  background:no-repeat center/contain url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cg fill='%23200800'%3E%3Cpath d='M3 8 L6 3 L9 8 Z'/%3E%3Cpath d='M11 8 L14 3 L17 8 Z'/%3E%3Cpath d='M2 11 Q10 13 18 11 L16.5 16 L14 14 L12 17 L10 14.5 L8 17 L6 14 L3.5 16 Z'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* ── DIYA · Diwali 2026 ──────────────────────────────────────────── */
+:root[data-skin="diya"]{
+  --bg:#120A26; --bg-glow-1:#4A1A5E; --bg-glow-2:#5A2A08;
+  --frame:#24154A; --frame-hi:#3E2A78; --frame-lo:#140B2C;
+  --socket:#1C1140; --socket-in:#150C32; --socket-edge:rgba(244,196,48,.12);
+  --ink:#FFF6E6; --ink-2:#D8B98A; --ink-3:#9C8466;
+  --rule:rgba(244,196,48,.24);
+  --accent:#F4C430; --accent-2:#E8336D; --accent-ink:#1E1300;
+  --panel:#1E1240; --panel-2:#160D30; --shadow:rgba(0,0,0,.75);
+  --danger:#FF5A5A; --good:#5BE4A0;
+  --plate-1:#2E1C5C; --plate-2:#1E1240; --plate-edge:#F4C430;
+  --board-radius:22px; --cell-radius:10px; --tray-tex:none;
+}
+:root[data-skin="diya"] body{
+  background:
+    radial-gradient(2px 2px at 10% 90%, #FFC85A 50%, transparent 51%),
+    radial-gradient(2px 2px at 30% 94%, #FFB13B 50%, transparent 51%),
+    radial-gradient(2px 2px at 50% 91%, #FFD27A 50%, transparent 51%),
+    radial-gradient(2px 2px at 70% 95%, #FFB13B 50%, transparent 51%),
+    radial-gradient(2px 2px at 90% 92%, #FFC85A 50%, transparent 51%),
+    radial-gradient(100% 30% at 50% 100%, rgba(255,160,40,.22) 0%, transparent 65%),
+    radial-gradient(80% 50% at 15% -5%, var(--bg-glow-1) 0%, transparent 60%),
+    radial-gradient(60% 40% at 90% 10%, var(--bg-glow-2) 0%, transparent 55%),
+    var(--bg);
+  background-attachment:fixed;
+}
+:root[data-skin="diya"] .board{
+  background:
+    repeating-conic-gradient(from 0deg at 50% 50%, rgba(244,196,48,.05) 0 10deg, transparent 10deg 20deg),
+    linear-gradient(165deg,var(--frame-hi),var(--frame) 50%,var(--frame-lo));
+  box-shadow:inset 0 1px 0 rgba(255,230,160,.25), 0 0 0 2px rgba(244,196,48,.4),
+             0 0 0 6px rgba(232,51,109,.18), 0 0 44px -10px rgba(255,170,40,.6), 0 14px 30px var(--shadow);
+}
+:root[data-skin="diya"] .cell{
+  background:radial-gradient(circle at 50% 45%, var(--socket), var(--socket-in));
+  box-shadow:inset 0 0 0 1px var(--socket-edge);
+}
+:root[data-skin="diya"] .blk{
+  border-radius:var(--cell-radius);
+  background:radial-gradient(110% 120% at 50% 10%, var(--hi), var(--base) 50%, var(--lo));
+  box-shadow:inset 0 0 0 1px rgba(255,240,200,.35), inset 0 -4px 6px -2px rgba(0,0,0,.4),
+             0 0 16px -2px var(--base);
+}
+/* a small flame on every lamp */
+:root[data-skin="diya"] .blk::after{
+  content:''; position:absolute; left:40%; top:14%; width:20%; height:30%; pointer-events:none;
+  border-radius:50% 50% 50% 50% / 70% 70% 30% 30%;
+  background:radial-gradient(circle at 50% 70%, #fff 0 25%, #FFE38A 45%, rgba(255,160,40,0) 75%);
+  filter:blur(.3px);
+}

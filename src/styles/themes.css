@@ -1,0 +1,186 @@
+/* ═══════════════════════════════════════════════════════════════════
+   Three skins. Each defines the same token set and its own .blk look.
+   Every skin commits to one palette - they are game worlds, not
+   light/dark variants of each other.
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* ── VOLTAGE · neon arcade (default) ─────────────────────────────── */
+:root, :root[data-skin="voltage"]{
+  --bg:#080614;
+  --bg-glow-1:#2A0F55;
+  --bg-glow-2:#06283A;
+  --frame:#171034;
+  --frame-hi:#2E2168;
+  --frame-lo:#0A0620;
+  --socket:#130C2C;
+  --socket-in:#0B0720;
+  --socket-edge:rgba(160,140,255,.10);
+  --ink:#EDE9FF;
+  --ink-2:#8F87C0;
+  --ink-3:#6A628F;
+  --rule:rgba(160,140,255,.20);
+  --accent:#22E7FF;
+  --accent-2:#FF2D95;
+  --accent-ink:#04121A;
+  --panel:#160F32;
+  --panel-2:#100A26;
+  --shadow:rgba(0,0,0,.75);
+  --danger:#FF4D6D;
+  --good:#5BE49B;
+  --plate-1:#1D1445;
+  --plate-2:#130C30;
+  --plate-edge:#22E7FF;
+  --board-radius:14px;
+  --cell-radius:7px;
+  --tray-tex:none;
+}
+:root[data-skin="voltage"] body,
+:root:not([data-skin]) body{
+  background:
+    radial-gradient(90% 55% at 15% -5%, var(--bg-glow-1) 0%, transparent 60%),
+    radial-gradient(80% 50% at 90% 8%, var(--bg-glow-2) 0%, transparent 55%),
+    var(--bg);
+}
+:root[data-skin="voltage"] .board{
+  background:
+    linear-gradient(160deg, var(--frame-hi), var(--frame) 48%, var(--frame-lo));
+  box-shadow:
+    inset 0 1px 0 rgba(180,160,255,.30),
+    0 0 0 1px rgba(34,231,255,.22),
+    0 0 34px -10px rgba(34,231,255,.5),
+    0 14px 30px var(--shadow);
+}
+:root[data-skin="voltage"] .cell{
+  background:linear-gradient(180deg,var(--socket-in),var(--socket));
+  box-shadow:inset 0 0 0 1px var(--socket-edge), inset 0 2px 5px rgba(0,0,0,.55);
+}
+:root[data-skin="voltage"] .blk{
+  border-radius:var(--cell-radius);
+  background:radial-gradient(120% 130% at 30% 18%, var(--hi), var(--base) 52%, var(--lo));
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,.30),
+    inset 0 -5px 9px -4px rgba(0,0,0,.65),
+    0 0 11px -1px var(--base),
+    0 0 26px -8px var(--base);
+}
+:root[data-skin="voltage"] .blk::after{
+  content:''; position:absolute; left:16%; right:16%; top:11%; height:22%;
+  border-radius:99px; background:rgba(255,255,255,.42); filter:blur(1.5px);
+}
+
+/* ── CHAPEL · stained glass ──────────────────────────────────────── */
+:root[data-skin="chapel"]{
+  --bg:#0C0E14;
+  --bg-glow-1:#1B2333;
+  --bg-glow-2:#241B10;
+  --frame:#232733;
+  --frame-hi:#39404F;
+  --frame-lo:#12141B;
+  --socket:#171A22;
+  --socket-in:#0F1117;
+  --socket-edge:rgba(224,184,76,.09);
+  --ink:#F3EFE3;
+  --ink-2:#A39C8A;
+  --ink-3:#7A7466;
+  --rule:rgba(224,184,76,.20);
+  --accent:#E0B84C;
+  --accent-2:#C6273E;
+  --accent-ink:#1A1508;
+  --panel:#1A1D26;
+  --panel-2:#13161D;
+  --shadow:rgba(0,0,0,.7);
+  --danger:#E0563F;
+  --good:#66C79A;
+  --plate-1:#242835;
+  --plate-2:#171A23;
+  --plate-edge:#E0B84C;
+  --board-radius:6px;
+  --cell-radius:2px;
+  --tray-tex:none;
+}
+:root[data-skin="chapel"] body{
+  background:
+    radial-gradient(70% 45% at 50% -8%, var(--bg-glow-1) 0%, transparent 62%),
+    radial-gradient(60% 40% at 88% 92%, var(--bg-glow-2) 0%, transparent 60%),
+    var(--bg);
+}
+:root[data-skin="chapel"] .board{
+  background:linear-gradient(168deg, var(--frame-hi), var(--frame) 40%, var(--frame-lo));
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.10),
+    0 0 0 1px rgba(224,184,76,.28),
+    0 0 0 4px rgba(0,0,0,.35),
+    0 16px 32px var(--shadow);
+}
+:root[data-skin="chapel"] .cell{
+  background:linear-gradient(180deg,var(--socket-in),var(--socket));
+  box-shadow:inset 0 0 0 1px rgba(0,0,0,.65), inset 0 1px 3px rgba(0,0,0,.5);
+}
+:root[data-skin="chapel"] .blk{
+  border-radius:var(--cell-radius);
+  background:linear-gradient(147deg, var(--hi) 0%, var(--base) 42%, var(--lo) 100%);
+  box-shadow:
+    inset 0 0 0 1.5px rgba(8,7,12,.8),
+    inset 0 2px 7px rgba(255,255,255,.30),
+    0 0 15px -5px var(--base);
+}
+:root[data-skin="chapel"] .blk::after{
+  content:''; position:absolute; inset:2px; border-radius:1px; pointer-events:none;
+  background:linear-gradient(118deg, rgba(255,255,255,.44) 0 15%, transparent 38%,
+             transparent 62%, rgba(255,255,255,.13) 78%, transparent 90%);
+}
+
+/* ── TIMBER · workshop wood (the original) ───────────────────────── */
+:root[data-skin="timber"]{
+  --bg:#EDE0CB;
+  --bg-glow-1:#F5EBDA;
+  --bg-glow-2:#E2D2B7;
+  --frame:#8A6440;
+  --frame-hi:#A87F55;
+  --frame-lo:#6B4B2E;
+  --socket:#C6AE8B;
+  --socket-in:#B39A76;
+  --socket-edge:rgba(0,0,0,.10);
+  --ink:#2E2016;
+  --ink-2:#6B5745;
+  --ink-3:#8B7761;
+  --rule:rgba(46,32,22,.18);
+  --accent:#9A7413;
+  --accent-2:#A33B22;
+  --accent-ink:#FFF6E2;
+  --panel:#DCCBAF;
+  --panel-2:#D2BE9C;
+  --shadow:rgba(46,32,22,.32);
+  --danger:#A33B22;
+  --good:#5C7A33;
+  --plate-1:#D9BF6E;
+  --plate-2:#B8993F;
+  --plate-edge:#9A7413;
+  --board-radius:10px;
+  --cell-radius:4px;
+  --tray-tex:repeating-linear-gradient(90deg,rgba(0,0,0,.05) 0 1px,transparent 1px 9px);
+}
+:root[data-skin="timber"] body{
+  background:radial-gradient(120% 80% at 50% -10%, var(--bg-glow-1) 0%, var(--bg-glow-2) 70%), var(--bg);
+}
+:root[data-skin="timber"] .board{
+  background:
+    repeating-linear-gradient(91deg, rgba(0,0,0,.05) 0 1px, transparent 1px 7px),
+    linear-gradient(165deg,var(--frame-hi),var(--frame) 45%,var(--frame-lo));
+  box-shadow:
+    inset 0 2px 0 rgba(255,255,255,.16), inset 0 -3px 0 rgba(0,0,0,.30),
+    0 6px 0 var(--frame-lo), 0 12px 22px var(--shadow);
+}
+:root[data-skin="timber"] .cell{
+  background:linear-gradient(180deg,var(--socket-in),var(--socket));
+  box-shadow:inset 0 2px 3px rgba(0,0,0,.32), inset 0 -1px 0 rgba(255,255,255,.10);
+}
+:root[data-skin="timber"] .blk{
+  border-radius:var(--cell-radius);
+  background:
+    repeating-linear-gradient(88deg, rgba(0,0,0,.055) 0 1px, transparent 1px 6px),
+    linear-gradient(168deg,var(--hi),var(--base) 52%,var(--lo));
+  box-shadow:
+    inset 0 2px 0 rgba(255,255,255,.30), inset 0 -3px 0 rgba(0,0,0,.26),
+    0 2px 3px rgba(0,0,0,.30);
+}
